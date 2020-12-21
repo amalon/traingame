@@ -1,0 +1,14 @@
+[ ] Window & OpenGL, blank screen
+[ ] Viewpoint
+    orthographic
+    x, y, zoom
+[ ] Mouse pointing
+[ ] Dragging out straight track with left mouse button
+[ ] Panning with right mouse button drag
+[ ] Zooming with mouse wheel
+[ ] Mouse over the connection points
+[ ] Snap to connection points
+[ ] Multiple tools GUI
+[ ] Delete track segment
+[ ] Curve into snapped connection points
+[ ] Drag out midpoints before committing with tick button/Enter

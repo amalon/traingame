@@ -1,0 +1,16 @@
+{
+  "name": "standard",
+  "gauge": 1.435,
+  "rails": [
+    {
+      "profile": "vignole",
+      "reference": "right",
+      "x": -0.7175
+    },
+    {
+      "profile": "vignole",
+      "reference": "left",
+      "x": 0.7175
+    }
+  ]
+}

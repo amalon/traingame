@@ -1,6 +1,11 @@
 #include <iostream>
 
-int main(int argc, char **argv) {
-    std::cout << "Hello, world!" << std::endl;
+#include "GaugeDataStore.h"
+
+int main(int argc, char **argv)
+{
+    const Gauge *standard = gaugeDataStore.get("standard");
+    std::cout << *standard << std::endl;
+
     return 0;
 }
