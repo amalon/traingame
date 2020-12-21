@@ -24,6 +24,10 @@ public:
     virtual bool handleEvents(unsigned int waitMs) = 0;
 
     virtual void renderFrame() = 0;
+
+protected:
+    // Generic notifications
+    void mouseWheel(int dx, int dy, bool flipped);
 };
 
 #endif // TRAINS_WINDOW_H

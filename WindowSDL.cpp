@@ -98,6 +98,11 @@ bool WindowSDL::handleEvents(unsigned int waitMs)
             };
             break;
 
+        case SDL_MOUSEWHEEL:
+            mouseWheel(event.wheel.x, event.wheel.y,
+                       event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED);
+            break;
+
         case SDL_QUIT:
             return false;
         }

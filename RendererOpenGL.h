@@ -6,9 +6,17 @@
 // Renderer of map
 class RendererOpenGL : public Renderer
 {
+    float aspect;
+
 public:
+    RendererOpenGL();
+
     virtual void setViewport(int width, int height);
+
     virtual void renderFrame();
+
+private:
+    void setupViewpoint();
 };
 
 #endif // TRAINS_RENDERER_OPENGL_H
