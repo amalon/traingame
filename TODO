@@ -1,4 +1,4 @@
-[ ] Window & OpenGL, blank screen
+[x] Window & OpenGL, blank screen
 [ ] Viewpoint
     orthographic
     x, y, zoom
