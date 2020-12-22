@@ -19,5 +19,6 @@ find_package(OpenGL REQUIRED)
 
 add_executable(traingame ${TRAINGAME_SRC})
 target_link_libraries(traingame PUBLIC SDL2::SDL2 OpenGL::OpenGL OpenGL::EGL)
+target_include_directories(traingame PRIVATE ".")
 
 install(TARGETS traingame RUNTIME DESTINATION bin)
