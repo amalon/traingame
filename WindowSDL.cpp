@@ -88,15 +88,48 @@ bool WindowSDL::handleEvents(unsigned int waitMs)
         case SDL_WINDOWEVENT:
             switch (event.window.event) {
             case SDL_WINDOWEVENT_EXPOSED:
-                redraw = true;
+                renderer->setRedraw();
                 break;
             case SDL_WINDOWEVENT_RESIZED:
                 width = event.window.data1;
                 height = event.window.data2;
                 renderer->setViewport(width, height);
                 break;
+            case SDL_WINDOWEVENT_LEAVE:
+                mouseLeave();
+                break;
             };
             break;
+
+        case SDL_MOUSEMOTION:
+            mouseMove(event.motion.x, event.motion.y,
+                      event.motion.xrel, event.motion.yrel);
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP: {
+            int button = -1;
+            switch (event.button.button) {
+                case SDL_BUTTON_LEFT:
+                    button = 0;
+                    break;
+                case SDL_BUTTON_MIDDLE:
+                    button = 2;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    button = 1;
+                    break;
+            }
+            if (button < 0)
+                break;
+            if (event.type == SDL_MOUSEBUTTONDOWN)
+                mouseDown(event.button.x, event.button.y,
+                          button, event.button.clicks);
+            else
+                mouseUp(event.button.x, event.button.y,
+                        button, event.button.clicks);
+            break;
+        }
 
         case SDL_MOUSEWHEEL:
             mouseWheel(event.wheel.x, event.wheel.y,
@@ -115,9 +148,8 @@ void WindowSDL::renderFrame()
     if (!inited)
         return;
 
-    if (redraw) {
+    if (renderer->needsRedraw()) {
         renderer->renderFrame();
         SDL_GL_SwapWindow(window);
-        redraw = false;
     }
 }

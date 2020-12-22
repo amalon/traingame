@@ -1,21 +1,31 @@
 #ifndef TRAINS_VIEWPOINT_H
 #define TRAINS_VIEWPOINT_H
 
+#include "Vector.h"
+
 class Viewpoint
 {
 private:
     /// Target coordinates
-    float target[3];
+    Vec3f target;
     /// Distance
     float distance;
+
+    // Aspect ratio (width / height)
+    float aspect;
 
 public:
     Viewpoint();
 
-    void pan(float dx, float dy);
+    void setAspect(float newAspect)
+    {
+        aspect = newAspect;
+    }
+
+    void pan(Vec3f delta);
     void zoom(float ddist);
 
-    const float *getTarget() const
+    const Vec3f &getTarget() const
     {
         return target;
     }
@@ -24,6 +34,16 @@ public:
     {
         return distance;
     }
+
+    // Orthographic boundaries
+    float getLeft() const;
+    float getRight() const;
+    float getTop() const;
+    float getBottom() const;
+    float getNear() const;
+    float getFar() const;
+
+    LineNormal3f viewportToWorldRay(const Vec2f &viewport) const;
 };
 
 #endif // TRAINS_VIEWPOINT_H

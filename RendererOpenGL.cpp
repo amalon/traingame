@@ -3,18 +3,10 @@
 #include <GL/gl.h>
 
 RendererOpenGL::RendererOpenGL()
-: aspect(1)
 {
 }
 
-void RendererOpenGL::setViewport(int width, int height)
-{
-    if (height)
-        aspect = (float)width / height;
-    glViewport(0, 0, width, height);
-}
-
-void RendererOpenGL::renderFrame()
+void RendererOpenGL::vRenderFrame()
 {
     // Clear the screen
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -33,18 +25,27 @@ void RendererOpenGL::renderFrame()
     glVertex2f(10, 10);
     glVertex2f(10, -10);
     glEnd();
+
+    if (navigateMode)
+        navigateMode->renderUI();
+    if (activeMode)
+        activeMode->renderUI();
+}
+
+void RendererOpenGL::vSetViewport(int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
 
 void RendererOpenGL::setupViewpoint()
 {
-    const float *target = viewpoint.getTarget();
-    float dist = viewpoint.getDistance();
+    const Vec3f &target = viewpoint.getTarget();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-dist * aspect, dist * aspect,
-            -dist, dist,
-            dist, -100);
+    glOrtho(viewpoint.getLeft(), viewpoint.getRight(),
+            viewpoint.getBottom(), viewpoint.getTop(),
+            viewpoint.getNear(), viewpoint.getFar());
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

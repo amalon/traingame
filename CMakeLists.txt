@@ -8,8 +8,11 @@ set(TRAINGAME_SRC
     RailProfileDataStore.cpp
     Window.cpp
     WindowSDL.cpp
+    Renderer.cpp
     RendererOpenGL.cpp
-    Viewpoint.cpp)
+    Viewpoint.cpp
+    ControlMode.cpp
+    NavigateMode.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)

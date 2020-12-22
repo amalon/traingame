@@ -2,9 +2,9 @@
 [x] Viewpoint
     orthographic
     x, y, zoom
-[ ] Mouse pointing
+[x] Mouse pointing
 [ ] Dragging out straight track with left mouse button
-[ ] Panning with right mouse button drag
+[x] Panning with right mouse button drag
 [x] Zooming with mouse wheel
 [ ] Mouse over the connection points
 [ ] Snap to connection points
