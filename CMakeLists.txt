@@ -13,9 +13,11 @@ set(TRAINGAME_SRC
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)
+
+set(OpenGL_GL_PREFERENCE "GLVND")
 find_package(OpenGL REQUIRED)
 
 add_executable(traingame ${TRAINGAME_SRC})
-target_link_libraries(traingame PUBLIC SDL2::SDL2 OpenGL::GL)
+target_link_libraries(traingame PUBLIC SDL2::SDL2 OpenGL::OpenGL OpenGL::EGL)
 
 install(TARGETS traingame RUNTIME DESTINATION bin)
