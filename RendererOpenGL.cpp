@@ -9,7 +9,7 @@ RendererOpenGL::RendererOpenGL()
 void RendererOpenGL::vRenderFrame()
 {
     // Clear the screen
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // setup viewpoint
@@ -18,8 +18,8 @@ void RendererOpenGL::vRenderFrame()
     // render 2d interface
 
     // FIXME Draw a dummy rectangle for now
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
+    glColor3f(0.0f, 0.5f, 0.0f);
+    glBegin(GL_QUADS);
     glVertex2f(-10, -10);
     glVertex2f(-10, 10);
     glVertex2f(10, 10);
