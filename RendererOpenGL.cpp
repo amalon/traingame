@@ -17,6 +17,9 @@ void RendererOpenGL::vRenderFrame()
     // render 3d world & interface
     // render 2d interface
 
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_POINT_SMOOTH);
+
     // FIXME Draw a dummy rectangle for now
     glColor3f(0.0f, 0.5f, 0.0f);
     glBegin(GL_QUADS);

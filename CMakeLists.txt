@@ -12,6 +12,7 @@ set(TRAINGAME_SRC
     RendererOpenGL.cpp
     Viewpoint.cpp
     ControlMode.cpp
+    TrackMode.cpp
     NavigateMode.cpp)
 
 find_package(nlohmann_json REQUIRED)
