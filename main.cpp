@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     RendererOpenGL renderer;
     TrackMode *trackMode = new TrackMode(railway);
     renderer.setActiveMode(trackMode);
+    renderer.setRailway(railway);
 
     WindowSDL window("Tracks", &renderer);
     if (!window.init()) {

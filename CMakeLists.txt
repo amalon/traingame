@@ -13,7 +13,10 @@ set(TRAINGAME_SRC
     Viewpoint.cpp
     ControlMode.cpp
     TrackMode.cpp
-    NavigateMode.cpp)
+    NavigateMode.cpp
+    Railway.cpp
+    TrackNode.cpp
+    TrackSection.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)

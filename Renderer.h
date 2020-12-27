@@ -1,9 +1,11 @@
 #ifndef TRAINS_RENDERER_H
 #define TRAINS_RENDERER_H
 
-#include "ControlMode.h"
 #include "Viewpoint.h"
 #include "Vector.h"
+
+class ControlMode;
+class Railway;
 
 // Renderer of map
 class Renderer
@@ -15,6 +17,7 @@ protected:
     ControlMode *activeMode;
     ControlMode *navigateMode;
     bool redraw;
+    Railway *railway;
 
     virtual void vSetViewport(int width, int height) = 0;
     virtual void vRenderFrame() = 0;
@@ -42,6 +45,8 @@ public:
 
     void setActiveMode(ControlMode *mode);
     void setNavigateMode(ControlMode *mode);
+
+    void setRailway(Railway *newRailway);
 
     void setRedraw()
     {

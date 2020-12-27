@@ -4,7 +4,8 @@
 Renderer::Renderer()
 : activeMode(nullptr),
   navigateMode(nullptr),
-  redraw(false)
+  redraw(false),
+  railway(nullptr)
 {
     mouseViewport.set(0);
     mouseRay.start.set(0);
@@ -95,6 +96,11 @@ void Renderer::setNavigateMode(ControlMode *mode)
         navigateMode->setRenderer(this);
         navigateMode->activate();
     }
+}
+
+void Renderer::setRailway(Railway *newRailway)
+{
+    railway = newRailway;
 }
 
 void Renderer::renderFrame()

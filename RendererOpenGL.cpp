@@ -1,4 +1,6 @@
 #include "RendererOpenGL.h"
+#include "ControlMode.h"
+#include "Railway.h"
 
 #include <GL/gl.h>
 
@@ -28,6 +30,9 @@ void RendererOpenGL::vRenderFrame()
     glVertex2f(10, 10);
     glVertex2f(10, -10);
     glEnd();
+
+    if (railway)
+        railway->render();
 
     if (navigateMode)
         navigateMode->renderUI();
