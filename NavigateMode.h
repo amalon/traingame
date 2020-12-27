@@ -17,8 +17,6 @@ public:
     virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
     virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
     virtual void mouseWheel(int dx, int dy, bool flipped);
-
-    virtual void renderUI();
 };
 
 #endif // TRAINS_NAVIGATE_MODE_H

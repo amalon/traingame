@@ -16,6 +16,7 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
     switch (step) {
     case 1:
         end = ray.start;
+        renderer->setRedraw();
         break;
     }
 }
@@ -25,6 +26,7 @@ void TrackMode::mouseLeave()
     switch (step) {
     case 1:
         end = start;
+        renderer->setRedraw();
         break;
     }
 }
@@ -38,10 +40,12 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             step = 1;
             start = ray.start;
             end = start;
+            renderer->setRedraw();
             break;
         case 1:
             step = 2;
             end = ray.start;
+            renderer->setRedraw();
             break;
         }
     }
