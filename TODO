@@ -6,7 +6,8 @@
 [x] Dragging out straight track with left mouse button
 [x] Panning with right mouse button drag
 [x] Zooming with mouse wheel
-[ ] Mouse over the connection points
+[x] Mouse over the connection points
+[ ] Manipulation of node rotate/curvature handles
 [ ] Snap to connection points
 [ ] Multiple tools GUI
 [ ] Delete track segment

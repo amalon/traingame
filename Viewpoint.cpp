@@ -61,3 +61,8 @@ LineNormal3f Viewpoint::viewportToWorldRay(const Vec2f &viewport) const
 
     return ret;
 }
+
+float Viewpoint::viewportToWorldSize(const Vec3f &pos, float size) const
+{
+    return size * (distance * 2);
+}

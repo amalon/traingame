@@ -13,6 +13,17 @@ private:
     Vec3f start;
     Vec3f end;
 
+    TrackNode *hoverNode;
+    TrackNode *selectedNode;
+
+    enum {
+        NONE,
+        MOVE,
+        ROTATE,
+        RECURVE
+    } dragMode;
+    LineNormal3f mouseRay;
+
 public:
     TrackMode(Railway *newRailway);
 

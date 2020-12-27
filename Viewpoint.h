@@ -44,6 +44,7 @@ public:
     float getFar() const;
 
     LineNormal3f viewportToWorldRay(const Vec2f &viewport) const;
+    float viewportToWorldSize(const Vec3f &pos, float size) const;
 };
 
 #endif // TRAINS_VIEWPOINT_H

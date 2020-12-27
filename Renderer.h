@@ -42,6 +42,10 @@ public:
     {
         return viewpoint;
     }
+    const Viewpoint &getViewpoint() const
+    {
+        return viewpoint;
+    }
 
     void setActiveMode(ControlMode *mode);
     void setNavigateMode(ControlMode *mode);

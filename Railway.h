@@ -3,6 +3,7 @@
 
 #include "TrackNode.h"
 #include "TrackSection.h"
+#include "Vector.h"
 
 #include <list>
 
@@ -19,6 +20,9 @@ private:
 public:
     void addNode(TrackNode *node);
     void addSection(TrackSection *section);
+
+    // Find nearest node
+    TrackNode *findClosestNode(const LineNormal3f &line, float range);
 
     void render();
 };
