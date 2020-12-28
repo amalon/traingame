@@ -32,17 +32,22 @@ void RendererOpenGL::vRenderFrame()
     glEnd();
 
     if (railway)
-        railway->render();
+        renderObj(railway);
 
     if (navigateMode)
-        navigateMode->renderUI();
+        renderObj(navigateMode);
     if (activeMode)
-        activeMode->renderUI();
+        renderObj(activeMode);
 }
 
 void RendererOpenGL::vSetViewport(int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void RendererOpenGL::renderObj(Renderable *obj)
+{
+    obj->renderGL(this);
 }
 
 void RendererOpenGL::setupViewpoint()

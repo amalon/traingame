@@ -1,8 +1,6 @@
 #include "NavigateMode.h"
 #include "Renderer.h"
 
-#include <GL/gl.h>
-
 NavigateMode::NavigateMode()
 : panning(false)
 {

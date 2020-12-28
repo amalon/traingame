@@ -1,6 +1,7 @@
 #ifndef TRAINS_RENDERER_H
 #define TRAINS_RENDERER_H
 
+#include "Renderable.h"
 #include "Viewpoint.h"
 #include "Vector.h"
 
@@ -63,6 +64,8 @@ public:
     }
 
     void renderFrame();
+
+    virtual void renderObj(Renderable *obj) = 0;
 };
 
 #endif // TRAINS_RENDERER_H

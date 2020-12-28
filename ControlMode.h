@@ -1,11 +1,12 @@
 #ifndef TRAINS_CONTROL_MODE_H
 #define TRAINS_CONTROL_MODE_H
 
-#include <Vector.h>
+#include "Renderable.h"
+#include "Vector.h"
 
 class Renderer;
 
-class ControlMode
+class ControlMode : public Renderable
 {
 protected:
     Renderer *renderer;
@@ -29,8 +30,6 @@ public:
     virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
     virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
     virtual void mouseWheel(int dx, int dy, bool flipped);
-
-    virtual void renderUI();
 };
 
 #endif // TRAINS_CONTROL_MODE_H

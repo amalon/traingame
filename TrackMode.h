@@ -32,7 +32,7 @@ public:
     virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
     virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
 
-    virtual void renderUI();
+    RENDERABLE_GL();
 };
 
 #endif // TRAINS_TRACK_MODE_H
