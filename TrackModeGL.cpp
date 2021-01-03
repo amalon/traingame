@@ -58,26 +58,6 @@ static void renderTrackNode(const Renderer *renderer, const TrackNode *node)
 
 void TrackMode::renderGL(RendererOpenGL *renderer)
 {
-    if (step < 1)
-        return;
-
-    glLineWidth(2);
-    glPointSize(4);
-
-    if (step == 1) {
-        glBegin(GL_LINE_STRIP);
-        glColor3f(0, 0, 0);
-        glVertex3fv((const float *)start);
-        glVertex3fv((const float *)end);
-        glEnd();
-
-        glBegin(GL_POINTS);
-        glColor3f(0.3f, 0.3f, 0.3f);
-        glVertex3fv((const float *)start);
-        glVertex3fv((const float *)end);
-        glEnd();
-    }
-
     if (selectedNode) {
         glLineWidth(3);
         glPointSize(10);

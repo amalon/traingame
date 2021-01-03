@@ -9,6 +9,7 @@
 [x] Mouse over the connection points
 [ ] Manipulation of node rotate/curvature handles
 [ ] Snap to connection points
+[x] allow creating new tracks and manipulation of existing tracks at same time
 [ ] Multiple tools GUI
 [ ] Delete track segment
 [ ] Curve into snapped connection points

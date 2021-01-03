@@ -9,9 +9,6 @@ class TrackMode : public ControlMode
 {
 private:
     Railway *railway;
-    int step;
-    Vec3f start;
-    Vec3f end;
 
     TrackNode *hoverNode;
     TrackNode *selectedNode;
