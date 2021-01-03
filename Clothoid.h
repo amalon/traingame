@@ -18,6 +18,7 @@ public:
     typedef Angle CurvatureRate;
     typedef maths::Vector<2, Length> Vec2l;
 
+private:
     // Start position of clothoid
     Vec2l startPosition;
     // Start direction, counterclockwise from east (1, 0) towards north (0, 1)
@@ -28,13 +29,17 @@ public:
     CurvatureRate curvatureRate;
     // Signed square root of absolute curvature rate
     CurvatureRate curvatureRateSqrt;
+    // Total length of curve
+    Length length;
 
+public:
     Clothoid()
     : startPosition((L)0),
       startDirection(0),
       startCurvature(0),
       curvatureRate(0),
-      curvatureRateSqrt(0)
+      curvatureRateSqrt(0),
+      length(0)
     {
     }
 
@@ -59,8 +64,63 @@ public:
         else
             curvatureRateSqrt = -sqrt(-newCurvatureRate);
     }
+    void setLength(Length newLength)
+    {
+        length = newLength;
+    }
 
     // Accessors
+
+    Vec2l getStartPosition() const
+    {
+        return startPosition;
+    }
+    Angle getStartDirection() const
+    {
+        return startDirection;
+    }
+    Curvature getStartCurvature() const
+    {
+        return startCurvature;
+    }
+    CurvatureRate getCurvatureRate() const
+    {
+        return curvatureRate;
+    }
+    Length getLength() const
+    {
+        return length;
+    }
+
+    // Find information about the end
+    Vec2l getEndPosition() const
+    {
+        return positionAtLength(length);
+    }
+    Angle getEndDirection() const
+    {
+        return directionAtLength(length);
+    }
+    Curvature getEndCurvature() const
+    {
+        return curvatureAtLength(length);
+    }
+    Angle getEndDirectionChange() const
+    {
+        return directionChangeAtLength(length);
+    }
+
+    // Get a clothoid that follows on from this one
+    Clothoid getNextClothoid() const
+    {
+        Clothoid ret;
+        ret.setStartPosition(getEndPosition());
+        ret.setStartDirection(getEndDirection());
+        ret.setStartCurvature(getEndCurvature());
+        return ret;
+    }
+
+    // Calculators
 
     // Find the curvature at distance length
     Curvature curvatureAtLength(Length length) const
@@ -68,10 +128,33 @@ public:
         return startCurvature + curvatureRate * length;
     }
 
+    // Find center of turning circle at start
+    Vec2l circleAtStart() const
+    {
+        Vec2l directionVec;
+        maths::sincos((Length)(startDirection + M_PI/2), &directionVec[1], &directionVec[0]);
+        return startPosition + directionVec / startCurvature;
+    }
+    // Find center of turning circle at distance length
+    Vec2l circleAtLength(Length length) const
+    {
+        float curvature = curvatureAtLength(length);
+        float direction = directionAtLength(length);
+        Vec2l directionVec;
+        maths::sincos(direction + M_PI/2, &directionVec[1], &directionVec[0]);
+        return positionAtLength(length) + directionVec / curvature;
+    }
+
+    // Find the direction at distance length
+    Angle directionChangeAtLength(Length length) const
+    {
+        return length * (startCurvature + curvatureRate * length / 2);
+    }
+
     // Find the direction at distance length
     Angle directionAtLength(Length length) const
     {
-        return startDirection + length * (startCurvature + curvatureRate * length / 2);
+        return startDirection + directionChangeAtLength(length);
     }
 
     // Find the 2D position at distance length
