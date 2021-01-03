@@ -3,6 +3,10 @@
 
 #include "Vector.h"
 
+#include <unordered_set>
+
+class TrackSection;
+
 class TrackNode
 {
 private:
@@ -12,6 +16,9 @@ private:
     float direction;
     // Curvature (radians/length CCW)
     float curvature;
+
+    // Set of sections in each direction (backward, forward)
+    std::unordered_set<TrackSection *> sections[2];
 
 public:
     // Encapsulates a reference to a node in a particular direction (forwards or
@@ -66,6 +73,11 @@ public:
                 return curvature;
             return -curvature;
         }
+
+        void addTrackSection(TrackSection *section)
+        {
+            node->addTrackSection(section, forward);
+        }
     };
 
 public:
@@ -82,21 +94,33 @@ public:
         return Reference(this, false);
     }
 
+    // TrackSection linkage
+
+    void addTrackSection(TrackSection *section, bool forward)
+    {
+        sections[forward].insert(section);
+    }
+
     // Setters
+
+    void notifySections();
 
     void setPosition(const Vec3f &newPosition)
     {
         position = newPosition;
+        notifySections();
     }
 
     void setDirection(float newDirection)
     {
         direction = newDirection;
+        notifySections();
     }
 
     void setCurvature(float newCurvature)
     {
         curvature = newCurvature;
+        notifySections();
     }
 
     // Accessors

@@ -45,6 +45,9 @@ public:
         return nodes[1];
     }
 
+    // Notifications of node changes
+    void notifyNodeChanged(TrackNode *node);
+
     RENDERABLE_GL();
 
 private:

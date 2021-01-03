@@ -4,6 +4,9 @@ TrackSection::TrackSection(TrackNode::Reference start,
                            TrackNode::Reference end)
 : nodes{start, end}
 {
+    start.addTrackSection(this);
+    end.addTrackSection(this);
+
     interpolate();
 }
 
@@ -468,4 +471,9 @@ void TrackSection::interpolate()
     }
 
     ClothoidT *end = chain.append();
+}
+
+void TrackSection::notifyNodeChanged(TrackNode *node)
+{
+    interpolate();
 }
