@@ -34,6 +34,7 @@ static void renderTrackNode(const Renderer *renderer, const TrackNode *node)
     Clothoid<float, float> clothoid;
     clothoid.setStartPosition((Vec2f)position);
     clothoid.setStartDirection(direction);
+    clothoid.setStartCurvature(node->getCurvature());
     glBegin(GL_LINE_STRIP);
     for (int i = -60; i <= 60; ++i) {
         float len = size * i / 10;
