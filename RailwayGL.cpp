@@ -1,18 +1,15 @@
 #include "Railway.h"
+#include "RendererOpenGL.h"
+
 #include <GL/gl.h>
 
 void Railway::renderGL(RendererOpenGL *renderer)
 {
     glLineWidth(2);
     glPointSize(4);
-
-    glBegin(GL_LINES);
-    glColor3f(0, 0, 0);
-    for (const TrackSection *section: sections) {
-        glVertex3fv((const float *)section->start().getPosition());
-        glVertex3fv((const float *)section->end().getPosition());
+    for (TrackSection *section: sections) {
+        renderer->renderObj(section);
     }
-    glEnd();
 
     glBegin(GL_POINTS);
     glColor3f(0.3f, 0.3f, 0.3f);

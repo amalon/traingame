@@ -9,10 +9,11 @@ class RendererOpenGL : public Renderer
 public:
     RendererOpenGL();
 
+    virtual void renderObj(Renderable *obj);
+
 protected:
     virtual void vRenderFrame();
     virtual void vSetViewport(int width, int height);
-    virtual void renderObj(Renderable *obj);
 
 private:
     void setupViewpoint();

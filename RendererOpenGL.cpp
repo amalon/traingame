@@ -8,6 +8,11 @@ RendererOpenGL::RendererOpenGL()
 {
 }
 
+void RendererOpenGL::renderObj(Renderable *obj)
+{
+    obj->renderGL(this);
+}
+
 void RendererOpenGL::vRenderFrame()
 {
     // Clear the screen
@@ -43,11 +48,6 @@ void RendererOpenGL::vRenderFrame()
 void RendererOpenGL::vSetViewport(int width, int height)
 {
     glViewport(0, 0, width, height);
-}
-
-void RendererOpenGL::renderObj(Renderable *obj)
-{
-    obj->renderGL(this);
 }
 
 void RendererOpenGL::setupViewpoint()

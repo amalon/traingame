@@ -19,7 +19,8 @@ set(TRAINGAME_SRC
     TrackNode.cpp
     TrackSection.cpp
     RailwayGL.cpp
-    TrackModeGL.cpp)
+    TrackModeGL.cpp
+    TrackSectionGL.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)
