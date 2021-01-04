@@ -32,3 +32,7 @@ void ControlMode::mouseUp(const LineNormal3f &ray, int button, int clicks)
 void ControlMode::mouseWheel(int dx, int dy, bool flipped)
 {
 }
+
+void ControlMode::viewportChanged()
+{
+}

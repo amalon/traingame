@@ -7,7 +7,7 @@
 [x] Panning with right mouse button drag
 [x] Zooming with mouse wheel
 [x] Mouse over the connection points
-[ ] Manipulation of node rotate/curvature handles
+[x] Manipulation of node rotate/curvature handles
 [ ] Snap to connection points
 [x] allow creating new tracks and manipulation of existing tracks at same time
 [ ] Multiple tools GUI

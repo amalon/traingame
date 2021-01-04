@@ -70,6 +70,15 @@ void Renderer::mouseWheel(int dx, int dy, bool flipped)
         navigateMode->mouseWheel(dx, dy, flipped);
 }
 
+void Renderer::viewportChanged()
+{
+    mouseMove(mouseViewport);
+    if (activeMode)
+        activeMode->viewportChanged();
+    if (navigateMode)
+        navigateMode->viewportChanged();
+}
+
 void Renderer::setActiveMode(ControlMode *mode)
 {
     if (activeMode) {

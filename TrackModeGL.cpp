@@ -42,17 +42,15 @@ static void renderTrackNode(const Renderer *renderer, const TrackNode *node)
         glVertex3f(pos[0], pos[1], position[2]);
     }
     glEnd();
+}
 
+void TrackMode::renderHandlesGL(RendererOpenGL * renderer)
+{
     // Draw handles
-    Vec3f handles[] = {
-        (clothoid.positionAtLength(size * 6), position[2]),
-        (clothoid.positionAtLength(size * -6), position[2]),
-        position + 3 * size * directionVector,
-        position - 3 * size * directionVector
-    };
     glBegin(GL_POINTS);
-    for (const Vec3f &handle: handles)
-        glVertex3fv((const float *)handle);
+    for (const Handle &handle: handles)
+        if (handle.enabled)
+            glVertex3fv((const float *)handle.position);
     glEnd();
 }
 
@@ -63,11 +61,13 @@ void TrackMode::renderGL(RendererOpenGL *renderer)
         glPointSize(10);
         glColor3f(1, 0, 0);
         renderTrackNode(renderer, selectedNode);
+        renderHandlesGL(renderer);
 
         glLineWidth(1);
         glPointSize(8);
         glColor3f(0.5, 0.5, 0.5);
         renderTrackNode(renderer, selectedNode);
+        renderHandlesGL(renderer);
     }
     if (hoverNode) {
         glLineWidth(1);

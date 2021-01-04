@@ -34,10 +34,7 @@ public:
     void mouseUp(Vec2f viewport, int button, int clicks);
     void mouseWheel(int dx, int dy, bool flipped);
 
-    void viewportChanged()
-    {
-        mouseMove(mouseViewport);
-    }
+    void viewportChanged();
 
     Viewpoint &getViewpoint()
     {
