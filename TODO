@@ -1,16 +1,49 @@
-[x] Window & OpenGL, blank screen
-[x] Viewpoint
-    orthographic
-    x, y, zoom
-[x] Mouse pointing
-[x] Dragging out straight track with left mouse button
-[x] Panning with right mouse button drag
-[x] Zooming with mouse wheel
-[x] Mouse over the connection points
-[x] Manipulation of node rotate/curvature handles
-[ ] Snap to connection points
-[x] allow creating new tracks and manipulation of existing tracks at same time
+TrackMode
+[ ] adjust new nodes until finished initial drag
+    [ ] come out from appropriate end of start node
+    [ ] rotate new nodes to face one another as a straight
+    [ ] rotate new end node for minimum length to start node
+[ ] Snap to connection points, merging nodes
+[ ] Drag out midpoints before committing with tick button/Enter
+[ ] TrackSection selection mode
+    [ ] Nearby mouseover selects virtual mid-node
+[ ] Selection of subset of multi-track node
+[ ] Interface for changing/setting number of tracks
+
+TrackSection
+[ ] Extremely short straight not calculated
+[ ] Begin merging T2/T3 when directions match and straight wants to be negative
+[ ] Add other algorithms to compete with 2 curves + straight
+    [ ] Single clothoid
+    [ ] Clothoid pair
+    [ ] Clothoid pair + fixed curve
+[ ] Avoid self-crossing
+[ ] Excess end curvature not handled
+[ ] Multiple tracks in sections and nodes
+
+General
 [ ] Multiple tools GUI
 [ ] Delete track segment
-[ ] Curve into snapped connection points
-[ ] Drag out midpoints before committing with tick button/Enter
+[ ] Make use of Gauge data and min/max curves
+    Dimentions:
+    [.] TrackGauge - distance between rails
+        [.] RailProfile - shape of rails - tied to TrackGauge?
+    [ ] LoadingGauge - max size of trains
+    [ ] StructureGauge - min distance to obstructions at different heights above rails
+    [ ] TrackSpacing - min distance to TrackSpacing of an adjacent track (usually of the same TrackSpacing)
+    Shapes:
+    [ ] TrackSleeperSpec - spacing, type and shape of railway sleepers
+        dependent on RailProfile?
+        [ ] TrackSleeperType
+            [ ] Wooden
+            [ ] Concrete
+            [ ] Steel
+    [ ] TrackBalastSpec - type and profile of track balast
+    [ ] Track Specification
+        TrackGauge - constant throughout, nodes and sections have
+        LoadingGauge - may vary, though may be built to min specification
+        StructureGauge - may vary, though may be built to min specification
+        TrackSpacing - may vary, though may be built to min specification
+            could vary along a tracksection?
+[ ] Fix disappearing view when zooming out
+[ ] Prettify island a bit
