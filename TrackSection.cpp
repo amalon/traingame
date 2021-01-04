@@ -2,7 +2,9 @@
 
 TrackSection::TrackSection(TrackNode::Reference start,
                            TrackNode::Reference end)
-: nodes{start, end}
+: nodes{start, end},
+  lastDir1(-1),
+  lastDir2(-1)
 {
     start.addTrackSection(this);
     end.addTrackSection(this);
@@ -195,6 +197,7 @@ void TrackSection::interpolate()
     const float endDirectionRev = nodes[1].getDirection();
     const float endCurvatureRev = nodes[1].getCurvature();
 
+    int bestDir1, bestDir2;
     float direction1 = -1.0f;
     float direction2 = 1.0f;
 
@@ -411,8 +414,14 @@ void TrackSection::interpolate()
                              + params.t3.length
                              + params.c2.length
                              + params.t4.length;
+                // For borderline cases, prefer the last chosen directions
+                // This prevents flickering between equally bad possibilities
+                if (d1 == lastDir1 && d2 == lastDir2)
+                    length -= 1;
                 if (bestLength < 0 || length < bestLength) {
                     bestLength = length;
+                    bestDir1 = d1;
+                    bestDir2 = d2;
 
                     direction1 = dir1;
                     direction2 = dir2;
@@ -427,6 +436,8 @@ void TrackSection::interpolate()
      * if d1==d2, negative straight, use double clothoid calculation to replace T2 and T3
      */
 
+    lastDir1 = bestDir1;
+    lastDir2 = bestDir2;
     chain.clear();
 
     ClothoidT *transition1 = chain.append();

@@ -19,6 +19,9 @@ private:
     // Chain of clothoids describing track shape
     ClothoidChainT chain;
 
+    // Last chosen directions of 2 curves
+    int lastDir1, lastDir2;
+
 public:
     // Constructor
     TrackSection(TrackNode::Reference start,
