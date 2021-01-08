@@ -190,7 +190,7 @@ void TrackSection::interpolate()
 
     // TODO pick an appropriate rate
     const float curvatureRate = 1.0f / 30.0f / 10.0f;
-    const float minCurvature = 1.0f / 30.0f;
+    float minCurvature = 1.0f / 30.0f;
     const float maxCurvature = 1.0f / 15.0f;
     const float startDirection = nodes[0].getDirection();
     const float startCurvature = nodes[0].getCurvature();
@@ -201,8 +201,12 @@ void TrackSection::interpolate()
     float direction1 = -1.0f;
     float direction2 = 1.0f;
 
-    float minCurvature1 = minCurvature;
-    float minCurvature2 = minCurvature;
+    // If multiple tracks to right, reduce curvature accordingly
+    if (nodes[0].getNumTracks() > 1) {
+        float displacement = nodes[0].getMinSpec().getTrackSpacing() * (nodes[0].getNumTracks() - 1) / 2;
+        minCurvature = 1.0f / (1.0f / minCurvature + displacement);
+    }
+
     TrackSectionParams bestParams;
 
     // individual clothoids excluding the curves and straights
@@ -221,17 +225,17 @@ void TrackSection::interpolate()
     float transition2DirectionChange[2];
     float transition3DirectionChange[2];
     float transition4DirectionChange[2];
-    Vec2f offset = (Vec2f)nodes[1].getPosition() - (Vec2f)nodes[0].getPosition();
+    Vec2f offset = (Vec2f)nodes[1].getMidpoint() - (Vec2f)nodes[0].getMidpoint();
     for (int d1 = 0; d1 < 2; ++d1) {
         float direction = d1 ? 1.0f : -1.0f;
         simpleT1[d1].rate = direction * curvatureRate;
-        simpleT1[d1].length = (direction * minCurvature1 - startCurvature) / simpleT1[d1].rate;
+        simpleT1[d1].length = (direction * minCurvature - startCurvature) / simpleT1[d1].rate;
         simpleT2[d1].rate = -simpleT1[d1].rate;
-        simpleT2[d1].length = minCurvature1 / curvatureRate;
+        simpleT2[d1].length = minCurvature / curvatureRate;
         simpleT3[d1].rate = direction * curvatureRate;
-        simpleT3[d1].length = minCurvature2 / curvatureRate;
+        simpleT3[d1].length = minCurvature / curvatureRate;
         simpleT4[d1].rate = -simpleT3[d1].rate;
-        simpleT4[d1].length = (-endCurvatureRev - direction * minCurvature2) / simpleT4[d1].rate;
+        simpleT4[d1].length = (-endCurvatureRev - direction * minCurvature) / simpleT4[d1].rate;
 
         uncurvedT1[d1].setStartDirection(nodes[0].getDirection());
         uncurvedT1[d1].setStartCurvature(startCurvature);
@@ -345,13 +349,13 @@ void TrackSection::interpolate()
                     curve1 += M_PI*2;
                 while (curve1 >= M_PI*2)
                     curve1 -= M_PI*2;
-                params.c1.length = curve1 / minCurvature1;
+                params.c1.length = curve1 / minCurvature;
                 float curve2 = dir2 * (angle3 - angle2);
                 while (curve2 < 0)
                     curve2 += M_PI*2;
                 while (curve2 >= M_PI*2)
                     curve2 -= M_PI*2;
-                params.c2.length = curve2 / minCurvature2;
+                params.c2.length = curve2 / minCurvature;
 
                 float curve1DirectionChange = fabs(transition1DirectionChange[d1] + dir1*curve1 + transition2DirectionChange[d1]);
                 float curve2DirectionChange = fabs(transition3DirectionChange[d2] + dir2*curve2 + transition4DirectionChange[d2]);
@@ -441,7 +445,7 @@ void TrackSection::interpolate()
     chain.clear();
 
     ClothoidT *transition1 = chain.append();
-    transition1->setStartPosition((ClothoidT::Vec2l)nodes[0].getPosition());
+    transition1->setStartPosition((ClothoidT::Vec2l)nodes[0].getMidpoint());
     transition1->setStartDirection(startDirection);
     transition1->setStartCurvature(startCurvature);
 
