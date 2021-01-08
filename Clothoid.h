@@ -91,6 +91,18 @@ public:
     {
         return length;
     }
+    Length getParallelLength(Length leftOffset) const
+    {
+        if (curvatureRate != 0) {
+            float avgCurvature = (startCurvature + getEndCurvature()) / 2;
+            // FIXME calculate correctly
+            return length * ((Length)1 - leftOffset * avgCurvature);
+        } else if (startCurvature != 0) {
+            return length * ((Length)1 - leftOffset * startCurvature);
+        } else {
+            return length;
+        }
+    }
 
     // Find information about the end
     Vec2l getEndPosition() const
@@ -126,6 +138,11 @@ public:
     Curvature curvatureAtLength(Length length) const
     {
         return startCurvature + curvatureRate * length;
+    }
+    // Find the curvature of a parallel line at distance length
+    Curvature parallelCurvatureAtLength(Length leftOffset, Length length) const
+    {
+        return (Curvature)1 / ((Curvature)1 / curvatureAtLength(length) - leftOffset);
     }
 
     // Find center of turning circle at start

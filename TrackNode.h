@@ -11,12 +11,14 @@ class TrackSection;
 class TrackNode
 {
 private:
-    // Position of node
+    // Position of node at track 0
     Vec3f position;
-    // Direction (radians CCW from east)
+    // Direction (radians CCW from east) of all tracks
     float direction;
-    // Curvature (radians/length CCW)
+    // Curvature (radians/length CCW) of track 0
     float curvature;
+    // Number of tracks (numbered 0..numTracks-1) to right of position
+    unsigned int numTracks;
 
     // Minimum track specifications
     const TrackSpec *minSpec;
@@ -33,6 +35,11 @@ public:
         TrackNode *node;
         // True if the reference is to the forward end of the node
         bool forward;
+        // Parent node track index of reference trackIndex 0
+        int firstTrack;
+        // Number of tracks
+        unsigned int numTracks;
+
 
     public:
         Reference()
@@ -42,7 +49,18 @@ public:
 
         Reference(TrackNode *newNode, bool newForward)
         : node(newNode),
-          forward(newForward)
+          forward(newForward),
+          firstTrack(newForward ? 0 : (newNode->numTracks - 1)),
+          numTracks(newNode->numTracks)
+        {
+        }
+
+        Reference(TrackNode *newNode, bool newForward,
+                  int newFirstTrack, int newNumTracks)
+        : node(newNode),
+          forward(newForward),
+          firstTrack(newFirstTrack),
+          numTracks(newNumTracks)
         {
         }
 
@@ -50,6 +68,17 @@ public:
         {
             node = newNode;
             forward = newForward;
+            firstTrack = newForward ? 0 : (newNode->numTracks - 1);
+            numTracks = newNode->numTracks;
+        }
+
+        void set(TrackNode *newNode, bool newForward,
+                 int newFirstTrack, int newNumTracks)
+        {
+            node = newNode;
+            forward = newForward;
+            firstTrack = newFirstTrack;
+            numTracks = newNumTracks;
         }
 
         bool isForward() const
@@ -57,9 +86,35 @@ public:
             return forward;
         }
 
-        const Vec3f &getPosition() const
+        // Get offset of midpoint of subset of tracks relative to position
+        float getMidpointOffset() const
         {
-            return node->getPosition();
+            if (forward)
+                return node->getMidpointOffset(firstTrack, numTracks);
+            else
+                return -node->getMidpointOffset(firstTrack - (numTracks - 1), numTracks);
+        }
+
+        float getTrackOffset(int trackIndex) const
+        {
+            float offset = node->getTrackOffset(parentTrackIndex(trackIndex));
+            if (forward)
+                return offset;
+            else
+                return -offset;
+        }
+
+        Vec3f getMidpoint() const
+        {
+            if (forward)
+                return node->getMidpoint(firstTrack, numTracks);
+            else
+                return node->getMidpoint(firstTrack - (numTracks - 1), numTracks);
+        }
+
+        Vec3f getPosition(int trackIndex = 0) const
+        {
+            return node->getPosition(parentTrackIndex(trackIndex));
         }
 
         float getDirection() const
@@ -70,12 +125,17 @@ public:
             return direction + M_PI;
         }
 
-        float getCurvature() const
+        float getCurvature(int trackIndex = 0) const
         {
-            float curvature = node->getCurvature();
+            float curvature = node->getCurvature(parentTrackIndex(trackIndex));
             if (forward)
                 return curvature;
             return -curvature;
+        }
+
+        unsigned int getNumTracks() const
+        {
+            return node->getNumTracks();
         }
 
         const TrackSpec &getMinSpec() const
@@ -87,6 +147,12 @@ public:
         {
             node->addTrackSection(section, forward);
         }
+
+    private:
+        int parentTrackIndex(int trackIndex) const
+        {
+            return firstTrack + (forward ? trackIndex : -trackIndex);
+        }
     };
 
 public:
@@ -96,11 +162,11 @@ public:
     // References
     Reference forward()
     {
-        return Reference(this, true);
+        return Reference(this, true, 0, numTracks);
     }
     Reference backward()
     {
-        return Reference(this, false);
+        return Reference(this, false, numTracks - 1, numTracks);
     }
 
     // TrackSection linkage
@@ -113,6 +179,8 @@ public:
     // Setters
 
     void notifySections();
+
+    void setMidpoint(const Vec3f &midpoint);
 
     void setPosition(const Vec3f &newPosition)
     {
@@ -132,21 +200,34 @@ public:
         notifySections();
     }
 
+    void setNumTracks(unsigned int newNumTracks)
+    {
+        numTracks = newNumTracks;
+    }
+
     // Accessors
 
-    const Vec3f &getPosition() const
-    {
-        return position;
-    }
+    // Get offset of midpoint relative to position
+    float getMidpointOffset() const;
+    // Get offset of midpoint of subset of tracks relative to position
+    float getMidpointOffset(int startTrack, int ofNumTracks) const;
+    // Get offset of track relative to position
+    float getTrackOffset(int trackIndex) const;
+
+    Vec3f getMidpoint(int startTrack = 0, int ofNumTracks = -1) const;
+
+    Vec3f getPosition(int trackIndex = 0) const;
 
     float getDirection() const
     {
         return direction;
     }
 
-    float getCurvature() const
+    float getCurvature(int trackIndex = 0) const;
+
+    unsigned int getNumTracks() const
     {
-        return curvature;
+        return numTracks;
     }
 
     const TrackSpec &getMinSpec() const
