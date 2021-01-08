@@ -118,7 +118,7 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             }
 
             TrackNode *endNode = new TrackNode();
-            endNode->setPosition(ray.start);
+            endNode->setPosition((Vec3f)(Vec2f)ray.start);
             endNode->setDirection(selectedNode->getDirection());
             railway->addNode(endNode);
 
