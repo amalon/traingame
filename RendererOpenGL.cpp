@@ -27,13 +27,16 @@ void RendererOpenGL::vRenderFrame()
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POINT_SMOOTH);
 
-    // FIXME Draw a dummy rectangle for now
+    // TODO Load a better island from somewhere
     glColor3f(0.0f, 0.5f, 0.0f);
-    glBegin(GL_QUADS);
-    glVertex2f(-10, -10);
-    glVertex2f(-10, 10);
-    glVertex2f(10, 10);
-    glVertex2f(10, -10);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(0, 0);
+    for (int i = 0; i <= 256; ++i) {
+        float vec[2];
+        sincosf(M_PI*2*i/256, &vec[0], &vec[1]);
+        float rad = 1000 + 200*sin(M_PI*20*i/256);
+        glVertex2f(rad*vec[0], rad*vec[1]);
+    }
     glEnd();
 
     if (railway)
