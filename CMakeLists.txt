@@ -6,6 +6,7 @@ set(TRAINGAME_SRC
     main.cpp
     GaugeDataStore.cpp
     RailProfileDataStore.cpp
+    TrackSpec.cpp
     Window.cpp
     WindowSDL.cpp
     Renderable.cpp

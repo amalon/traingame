@@ -39,7 +39,7 @@ General
             [ ] Concrete
             [ ] Steel
     [ ] TrackBalastSpec - type and profile of track balast
-    [ ] Track Specification
+    [.] Track Specification
         TrackGauge - constant throughout, nodes and sections have
         LoadingGauge - may vary, though may be built to min specification
         StructureGauge - may vary, though may be built to min specification
