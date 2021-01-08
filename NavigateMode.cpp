@@ -12,6 +12,7 @@ void NavigateMode::mouseMove(const LineNormal3f &ray)
 {
     if (panning && !mouseRay.norm.zero()) {
         Vec3f diff = ray.start - mouseRay.start;
+        diff[2] = 0;
         renderer->getViewpoint().pan(-diff);
         renderer->setRedraw();
     } else {

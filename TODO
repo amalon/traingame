@@ -45,5 +45,5 @@ General
         StructureGauge - may vary, though may be built to min specification
         TrackSpacing - may vary, though may be built to min specification
             could vary along a tracksection?
-[ ] Fix disappearing view when zooming out
+[x] Fix disappearing view when zooming out
 [ ] Prettify island a bit
