@@ -1,4 +1,5 @@
 #include "TrackMode.h"
+#include "TrackNode.h"
 #include "RendererOpenGL.h"
 #include "Clothoid.h"
 

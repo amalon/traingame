@@ -1,4 +1,7 @@
 #include "TrackMode.h"
+#include "TrackNode.h"
+#include "TrackSection.h"
+#include "Railway.h"
 #include "Renderer.h"
 
 #include <cmath>

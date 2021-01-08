@@ -1,5 +1,6 @@
 #include "Railway.h"
 #include "RendererOpenGL.h"
+#include "TrackSection.h"
 
 #include <GL/gl.h>
 

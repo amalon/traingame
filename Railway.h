@@ -2,11 +2,12 @@
 #define TRAINS_RAILWAY_H
 
 #include "Renderable.h"
-#include "TrackNode.h"
-#include "TrackSection.h"
 #include "Vector.h"
 
 #include <list>
+
+class TrackNode;
+class TrackSection;
 
 // Track sections
 // Signalling

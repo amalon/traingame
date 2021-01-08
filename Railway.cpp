@@ -1,4 +1,5 @@
 #include "Railway.h"
+#include "TrackNode.h"
 
 void Railway::addNode(TrackNode *node)
 {

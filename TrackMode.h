@@ -2,10 +2,12 @@
 #define TRAINS_TRACK_MODE_H
 
 #include "ControlMode.h"
-#include "Railway.h"
 #include "Vector.h"
 
+class TrackNode;
+class TrackSection;
 class TrackSpec;
+class Railway;
 
 class TrackMode : public ControlMode
 {
