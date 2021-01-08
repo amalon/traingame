@@ -15,6 +15,6 @@ void Railway::renderGL(RendererOpenGL *renderer)
     glBegin(GL_POINTS);
     glColor3f(0.3f, 0.3f, 0.3f);
     for (const TrackNode *node: nodes)
-        glVertex3fv((const float *)node->getPosition());
+        glVertex3fv((const float *)node->getMidpoint());
     glEnd();
 }

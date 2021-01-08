@@ -17,8 +17,8 @@ TrackNode *Railway::findClosestNode(const LineNormal3f &line, float range)
     TrackNode *best = nullptr;
     float bestRangeSqr = range * range;
     for (TrackNode *node: nodes) {
-        Vec3f closest = line * line.closestPoint(node->getPosition());
-        float distanceSqr = (closest - node->getPosition()).sqr();
+        Vec3f closest = line * line.closestPoint(node->getMidpoint());
+        float distanceSqr = (closest - node->getMidpoint()).sqr();
         if (distanceSqr < bestRangeSqr) {
             best = node;
             bestRangeSqr = distanceSqr;

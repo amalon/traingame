@@ -19,7 +19,7 @@ TrackSection
     [ ] Clothoid pair + fixed curve
 [ ] Avoid self-crossing
 [ ] Excess end curvature not handled
-[ ] Multiple tracks in sections and nodes
+[x] Multiple tracks in sections and nodes
 
 General
 [ ] Multiple tools GUI

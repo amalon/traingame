@@ -30,7 +30,7 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
         switch (dragMode) {
             case MOVE: {
                 Vec3f diff = ray.start - mouseRay.start;
-                selectedNode->setPosition(selectedNode->getPosition() + diff);
+                selectedNode->setMidpoint(selectedNode->getMidpoint() + diff);
                 updateHandles();
                 break;
             }
@@ -115,14 +115,16 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
 
             if (!selectedNode) {
                 TrackNode *startNode = new TrackNode(minSpec);
-                startNode->setPosition((Vec3f)(Vec2f)ray.start);
+                startNode->setNumTracks(4);
+                startNode->setMidpoint((Vec3f)(Vec2f)ray.start);
                 railway->addNode(startNode);
 
                 selectedNode = startNode;
             }
 
             TrackNode *endNode = new TrackNode(minSpec);
-            endNode->setPosition((Vec3f)(Vec2f)ray.start);
+            endNode->setNumTracks(4);
+            endNode->setMidpoint((Vec3f)(Vec2f)ray.start);
             endNode->setDirection(selectedNode->getDirection());
             railway->addNode(endNode);
 
@@ -164,7 +166,9 @@ void TrackMode::viewportChanged()
 void TrackMode::updateHandles()
 {
     if (selectedNode) {
-        const Vec3f &position = selectedNode->getPosition();
+        Vec3f position = selectedNode->getPosition();
+        Vec3f position1 = selectedNode->getPosition(0);
+        Vec3f position2 = selectedNode->getPosition(selectedNode->getNumTracks() - 1);
         float direction = selectedNode->getDirection();
         float size = renderer->getViewpoint().viewportToWorldSize(position, 0.02);
 
@@ -184,10 +188,10 @@ void TrackMode::updateHandles()
         handles[1].position = (clothoid.positionAtLength(size * -6), position[2]);
         handles[1].index = 0;
         handles[2].mode = ROTATE;
-        handles[2].position = position + 3 * size * directionVector;
+        handles[2].position = position1 + 3 * size * directionVector;
         handles[2].index = 1;
         handles[3].mode = ROTATE;
-        handles[3].position = position - 3 * size * directionVector;
+        handles[3].position = position2 - 3 * size * directionVector;
         handles[3].index = -1;
 
         // If dragging, just show handles in use
