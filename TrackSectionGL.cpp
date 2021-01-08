@@ -50,7 +50,7 @@ void TrackSection::renderGL(RendererOpenGL *renderer)
             samples = 2;
         lengthDelta = length / (samples - 1);
 
-        for (int rail = 0; rail < 2; ++rail) {
+        for (int rail = 0; rail < nodes[0].getMinSpec().getTrackGauge()->getNumRails(); ++rail) {
             glBegin(GL_LINE_STRIP);
             for (int i = 0; i < samples; ++i) {
                 float len = lengthDelta * i;
@@ -75,7 +75,7 @@ void TrackSection::renderGL(RendererOpenGL *renderer)
                 Vec2f leftVec(-forwardVec[1], forwardVec[0]);
 
                 Vec2f pos = clothoid.positionAtLength(len);
-                glVertex2fv((const float *)(pos + leftVec*(-0.7175+1.435*rail)));
+                glVertex2fv((const float *)(pos + leftVec*-nodes[0].getMinSpec().getTrackGauge()->getRailPosition(rail)[0]));
             }
             glEnd();
         }

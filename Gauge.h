@@ -6,6 +6,7 @@
 #include <ostream>
 
 #include "RailProfile.h"
+#include "Vector.h"
 
 class Gauge
 {
@@ -13,7 +14,7 @@ private:
     class RailPlacement {
     public:
         const RailProfile *profile;
-        float x, y;
+        Vec2f position;
     };
 
     std::string name;
@@ -32,17 +33,27 @@ public:
         gauge = newGauge;
     }
 
-    void addRail(const RailProfile *profile, float x, float y)
+    void addRail(const RailProfile *profile, const Vec2f &position)
     {
-        RailPlacement placement = { profile, x, y };
+        RailPlacement placement = { profile, position };
         rails.push_back(placement);
+    }
+
+    unsigned int getNumRails() const
+    {
+        return rails.size();
+    }
+
+    const Vec2f &getRailPosition(unsigned int rail) const
+    {
+        return rails[rail].position;
     }
 
     friend std::ostream &operator << (std::ostream &s, const Gauge &gauge) {
         s << "{ name: \"" << gauge.name << "\", gauge: " << gauge.gauge << ", rails = [";
         std::vector<RailPlacement>::const_iterator it;
         for (it = gauge.rails.begin(); it != gauge.rails.end(); ++it) {
-            s << " { profile: " << *(*it).profile << ", x: " << (*it).x << ", y: " << (*it).y << " }";
+            s << " { profile: " << *(*it).profile << ", x: " << (*it).position[0] << ", y: " << (*it).position[1] << " }";
         }
         return s << "] }";
     }

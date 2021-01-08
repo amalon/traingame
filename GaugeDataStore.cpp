@@ -16,13 +16,14 @@ Gauge *GaugeDataStore::load(const json &data)
     for (json::iterator it = rails.begin(); it != rails.end(); ++it) {
         json rail = *it;
         const RailProfile *profile = railProfileDataStore.get(rail["profile"]);
-        float x, y, dx, dy = 0;
-        dx = rail["x"];
-        if (!profile->lookupRef(rail["reference"], x, y)) {
-            x = y = 0;
+        Vec2f xy, dxy;
+        dxy[0] = rail["x"];
+        dxy[1] = 0;
+        if (!profile->lookupRef(rail["reference"], xy[0], xy[1])) {
+            xy.set(0);
             // Reference not found
         }
-        gauge->addRail(profile, x + dx, y + dy);
+        gauge->addRail(profile, xy + dxy);
     }
     return gauge;
 }
