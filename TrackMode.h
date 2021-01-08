@@ -5,10 +5,13 @@
 #include "Railway.h"
 #include "Vector.h"
 
+class TrackSpec;
+
 class TrackMode : public ControlMode
 {
 private:
     Railway *railway;
+    const TrackSpec *minSpec;
 
     TrackNode *hoverNode;
     TrackNode *selectedNode;
@@ -30,7 +33,7 @@ private:
     } handles[4];
 
 public:
-    TrackMode(Railway *newRailway);
+    TrackMode(Railway *newRailway, const TrackSpec *newMinSpec);
 
     virtual void mouseMove(const LineNormal3f &ray);
     virtual void mouseLeave();

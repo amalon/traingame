@@ -1,10 +1,12 @@
 #include "TrackNode.h"
 #include "TrackSection.h"
+#include "TrackSpec.h"
 
-TrackNode::TrackNode()
+TrackNode::TrackNode(const TrackSpec *newMinSpec)
 : position(0.0f),
   direction(0),
-  curvature(0)
+  curvature(0),
+  minSpec(newMinSpec)
 {
 }
 

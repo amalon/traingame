@@ -3,8 +3,9 @@
 
 #include <cmath>
 
-TrackMode::TrackMode(Railway *newRailway)
+TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
 : railway(newRailway),
+  minSpec(newMinSpec),
   hoverNode(nullptr),
   selectedNode(nullptr),
   dragMode(NONE)
@@ -110,14 +111,14 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             // Double left click: Start a new track section
 
             if (!selectedNode) {
-                TrackNode *startNode = new TrackNode();
+                TrackNode *startNode = new TrackNode(minSpec);
                 startNode->setPosition((Vec3f)(Vec2f)ray.start);
                 railway->addNode(startNode);
 
                 selectedNode = startNode;
             }
 
-            TrackNode *endNode = new TrackNode();
+            TrackNode *endNode = new TrackNode(minSpec);
             endNode->setPosition((Vec3f)(Vec2f)ray.start);
             endNode->setDirection(selectedNode->getDirection());
             railway->addNode(endNode);

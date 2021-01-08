@@ -1,6 +1,7 @@
 #ifndef TRAINS_TRACK_NODE_H
 #define TRAINS_TRACK_NODE_H
 
+#include "TrackSpec.h"
 #include "Vector.h"
 
 #include <unordered_set>
@@ -16,6 +17,9 @@ private:
     float direction;
     // Curvature (radians/length CCW)
     float curvature;
+
+    // Minimum track specifications
+    const TrackSpec *minSpec;
 
     // Set of sections in each direction (backward, forward)
     std::unordered_set<TrackSection *> sections[2];
@@ -74,6 +78,11 @@ public:
             return -curvature;
         }
 
+        const TrackSpec &getMinSpec() const
+        {
+            return node->getMinSpec();
+        }
+
         void addTrackSection(TrackSection *section)
         {
             node->addTrackSection(section, forward);
@@ -82,7 +91,7 @@ public:
 
 public:
     // Constructor
-    TrackNode();
+    TrackNode(const TrackSpec *newMinSpec);
 
     // References
     Reference forward()
@@ -140,6 +149,10 @@ public:
         return curvature;
     }
 
+    const TrackSpec &getMinSpec() const
+    {
+        return *minSpec;
+    }
 };
 
 #endif // TRAINS_TRACK_NODE_H
