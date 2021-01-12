@@ -1,6 +1,7 @@
 #include "TrackMode.h"
 #include "TrackNode.h"
 #include "TrackSection.h"
+#include "TrackPosition.h"
 #include "Railway.h"
 #include "Renderer.h"
 
@@ -98,6 +99,8 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
                 if (handle) {
                     mode = handle->mode;
                     index = handle->index;
+                    if (mode == POINTS)
+                        selectedNode->switchPoints(index / 2, index & 1);
                 }
             }
 
@@ -187,26 +190,51 @@ void TrackMode::updateHandles()
         clothoid.setStartDirection(direction);
         clothoid.setStartCurvature(selectedNode->getCurvature());
 
+        handles.resize(4 + selectedNode->getNumTracks() * 2);
         handles[0].mode = RECURVE;
         handles[0].position = (clothoid.positionAtLength(size * 6), position[2]);
         handles[0].index = 0;
+        handles[0].enabled = true;
         handles[1].mode = RECURVE;
         handles[1].position = (clothoid.positionAtLength(size * -6), position[2]);
         handles[1].index = 0;
+        handles[1].enabled = true;
         handles[2].mode = ROTATE;
         handles[2].position = position1 + 3 * size * directionVector;
         handles[2].index = 1;
+        handles[2].enabled = true;
         handles[3].mode = ROTATE;
         handles[3].position = position2 - 3 * size * directionVector;
         handles[3].index = -1;
+        handles[3].enabled = true;
+
+        // Draw arrow showing point directions
+        for (int d = 0; d < 2; ++d) {
+            for (int i = 0; i < selectedNode->getNumTracks(); ++i) {
+                handles[4 + i*2 + d].mode = POINTS;
+                handles[4 + i*2 + d].index = i*2 + d;
+                if (selectedNode->hasPoints(i, (bool)d)) {
+                    TrackPosition pos;
+                    pos.set(selectedNode, true, i);
+                    if (pos) {
+                        pos += size * 10 * (d*2 - 1);
+                        if (pos)
+                            handles[4 + i*2 + d].position = pos.getPosition();
+                    }
+                    handles[4 + i*2 + d].enabled = (bool)pos && (handles[4 + i*2 + d].position - selectedNode->getPosition(i)).sqr() > size*size;
+                } else {
+                    handles[4 + i*2 + d].enabled = false;
+                }
+            }
+        }
 
         // If dragging, just show handles in use
         for (Handle &handle: handles)
-            handle.enabled = (dragMode == NONE ||
+            handle.enabled = handle.enabled &&
+                             (dragMode == NONE ||
                               (dragMode == handle.mode && dragIndex == handle.index));
     } else {
-        for (Handle &handle: handles)
-            handle.enabled = false;
+        handles.resize(0);
     }
     renderer->setRedraw();
 }

@@ -345,6 +345,9 @@ public:
     bool addTrackSection(bool forward, int startTrack, int ofNumTracks,
                          TrackSection *section, bool nextForward);
 
+    bool hasPoints(unsigned int trackIndex, bool forward) const;
+    void switchPoints(unsigned int trackIndex, bool forward);
+
     // Setters
 
     void notifySections();

@@ -1,5 +1,6 @@
 #include "TrackMode.h"
 #include "TrackNode.h"
+#include "TrackPosition.h"
 #include "RendererOpenGL.h"
 #include "Clothoid.h"
 
@@ -36,6 +37,25 @@ static void renderTrackNode(const Renderer *renderer, const TrackNode *node)
             glVertex3f(pos[0], pos[1], position[2]);
         }
         glEnd();
+
+        // Draw arrow showing point directions
+        TrackPosition pos;
+        pos.set(node, true, i);
+
+        if (pos) {
+            for (int d = -1; d <= 1; d += 2) {
+                if (!node->hasPoints(i, d > 0))
+                    continue;
+                glBegin(GL_LINE_STRIP);
+                glVertex3fv((const float *)position);
+                for (int j = 1; j <= 30; ++j) {
+                    TrackPosition pos2 = pos + size*j*d/3;
+                    if (pos2)
+                        glVertex3fv((const float *)pos2.getPosition());
+                }
+                glEnd();
+            }
+        }
     }
 
     // Draw a line perpendicular to the direction across the node

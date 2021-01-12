@@ -87,6 +87,22 @@ bool TrackNode::addTrackSection(bool forward, int startTrack, int ofNumTracks,
     return true;
 }
 
+bool TrackNode::hasPoints(unsigned int trackIndex, bool forward) const
+{
+    if (!trackInfo || trackIndex >= numTracks)
+        return false;
+
+    return trackInfo[trackIndex].directionInfo[forward ? 1 : 0].numSections > 1;
+}
+
+void TrackNode::switchPoints(unsigned int trackIndex, bool forward)
+{
+    if (!trackInfo || trackIndex >= numTracks)
+        return;
+
+    trackInfo[trackIndex].directionInfo[forward ? 1 : 0].switchPoints();
+}
+
 void TrackNode::notifySections()
 {
     for (int i = 0; i < 2; ++i)

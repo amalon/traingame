@@ -4,6 +4,8 @@
 #include "ControlMode.h"
 #include "Vector.h"
 
+#include <vector>
+
 class TrackNode;
 class TrackSection;
 class TrackSpec;
@@ -22,7 +24,8 @@ private:
         NONE,
         MOVE,
         ROTATE,
-        RECURVE
+        RECURVE,
+        POINTS
     } dragMode;
     int dragIndex;
     LineNormal3f mouseRay;
@@ -33,7 +36,8 @@ private:
         Vec3f position;
         enum DragMode mode;
         int index;
-    } handles[4];
+    };
+    std::vector<struct Handle> handles;
 
 public:
     TrackMode(Railway *newRailway, const TrackSpec *newMinSpec);
