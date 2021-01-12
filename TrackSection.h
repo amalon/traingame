@@ -48,6 +48,9 @@ public:
         return nodes[1];
     }
 
+    float getLength(int trackIndex) const;
+    Vec3f getPosition(int trackIndex, float distance) const;
+
     // Notifications of node changes
     void notifyNodeChanged(TrackNode *node);
 

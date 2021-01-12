@@ -13,6 +13,18 @@ TrackSection::TrackSection(TrackNode::Reference start,
     interpolate();
 }
 
+float TrackSection::getLength(int trackIndex) const
+{
+    float offset = nodes[0].getTrackOffset(trackIndex) - nodes[0].getMidpointOffset();
+    return chain.parallelLength(-offset);
+}
+
+Vec3f TrackSection::getPosition(int trackIndex, float distance) const
+{
+    float offset = nodes[0].getTrackOffset(trackIndex) - nodes[0].getMidpointOffset();
+    return (Vec3f)chain.parallelPositionAtParallelLength(-offset, distance);
+}
+
 /**
  * @brief Calculate more complete clothoid parameters for a double opposite
  *        clothoid.
