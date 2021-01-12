@@ -26,6 +26,7 @@ private:
     } dragMode;
     int dragIndex;
     LineNormal3f mouseRay;
+    bool mouseMoved;
 
     struct Handle {
         bool enabled;

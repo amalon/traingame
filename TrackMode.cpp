@@ -11,7 +11,8 @@ TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
   minSpec(newMinSpec),
   hoverNode(nullptr),
   selectedNode(nullptr),
-  dragMode(NONE)
+  dragMode(NONE),
+  mouseMoved(true)
 {
     mouseRay.start.set(0);
     mouseRay.norm.set(0);
@@ -70,6 +71,7 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
     }
 
     mouseRay = ray;
+    mouseMoved = true;
 }
 
 void TrackMode::mouseLeave()
@@ -81,7 +83,11 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
 {
     // Left button
     if (button == 0) {
+        if (mouseMoved)
+            clicks = 1;
         if (clicks == 1) {
+            mouseMoved = false;
+
             // Single left click
             enum DragMode mode = NONE;
             int index = 0;
