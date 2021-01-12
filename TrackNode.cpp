@@ -19,6 +19,34 @@ bool TrackNode::TReference<TrackNode *>::addTrackSection(TrackSection *section, 
                                     section, nextForward);
 }
 
+template <typename T>
+TrackSection *TrackNode::TReference<T>::nextSection(unsigned int trackIndex,
+                                                    unsigned int *outTrackIndex,
+                                                    bool *outForward) const
+{
+    if (!node->trackInfo)
+        return nullptr;
+    int pTrackIndex = parentTrackIndex(trackIndex);
+    assert(pTrackIndex >= 0 && "Negative track index");
+    assert(pTrackIndex < node->getNumTracks() && "Track index out of bounds");
+    TrackDirectionInfo &tdInfo = node->trackInfo[pTrackIndex].directionInfo[forward ? 1 : 0];
+    SectionRef &ref = tdInfo.defaultSection();
+    if (!ref.section)
+        return nullptr;
+
+    if (outForward)
+        *outForward = ref.forward;
+    if (outTrackIndex) {
+        if (ref.forward) {
+            *outTrackIndex = ref.section->start().localTrackIndex(pTrackIndex);
+        } else {
+            const Reference &end = ref.section->end();
+            *outTrackIndex = end.getNumTracks() - 1 - end.localTrackIndex(pTrackIndex);
+        }
+    }
+    return ref.section;
+}
+
 TrackNode::TrackNode(const TrackSpec *newMinSpec)
 : position(0.0f),
   direction(0),

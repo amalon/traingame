@@ -172,6 +172,13 @@ public:
             assert(firstTrack + (forward ? (numTracks-1) : (1-numTracks)) < node->getNumTracks());
         }
 
+        TReference subset(unsigned int first, unsigned int count) const
+        {
+            return TReference(node, forward,
+                              firstTrack + first,
+                              count);
+        }
+
         void set(T newNode, bool newForward)
         {
             node = newNode;
@@ -189,9 +196,31 @@ public:
             numTracks = newNumTracks;
         }
 
+        TReference reversed() const
+        {
+            return TReference(node, !forward,
+                              forward ? firstTrack + numTracks - 1
+                                      : firstTrack - numTracks + 1,
+                              numTracks);
+        }
+        TReference &reverse()
+        {
+            return *this = reversed();
+        }
+
         bool isForward() const
         {
             return forward;
+        }
+
+        int getFirstTrack() const
+        {
+            return firstTrack;
+        }
+
+        unsigned int getNumTracks() const
+        {
+            return numTracks;
         }
 
         // Get offset of midpoint of subset of tracks relative to position
@@ -241,11 +270,6 @@ public:
             return -curvature;
         }
 
-        unsigned int getNumTracks() const
-        {
-            return node->getNumTracks();
-        }
-
         const TrackSpec &getMinSpec() const
         {
             return node->getMinSpec();
@@ -253,6 +277,10 @@ public:
 
         // return false on failure
         bool addTrackSection(TrackSection *section, bool nextForward);
+
+        TrackSection *nextSection(unsigned int trackIndex,
+                                  unsigned int *outTrackIndex = nullptr,
+                                  bool *outForward = nullptr) const;
 
         int parentTrackIndex(int trackIndex) const
         {
