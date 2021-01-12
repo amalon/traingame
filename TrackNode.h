@@ -4,6 +4,7 @@
 #include "TrackSpec.h"
 #include "Vector.h"
 
+#include <cassert>
 #include <unordered_set>
 
 class TrackSection;
@@ -11,6 +12,9 @@ class TrackSection;
 class TrackNode
 {
 private:
+    // Limit the number of tracks coming out of one side of a node
+    static constexpr unsigned int maxDivergence = 2;
+
     // Position of node at track 0
     Vec3f position;
     // Direction (radians CCW from east) of all tracks
@@ -23,8 +27,96 @@ private:
     // Minimum track specifications
     const TrackSpec *minSpec;
 
-    // Set of sections in each direction (backward, forward)
-    std::unordered_set<TrackSection *> sections[2];
+    // When referring to track sections, we refer to a specific end
+    class SectionRef {
+    public:
+        TrackSection *section;
+        bool forward;
+
+        SectionRef()
+        : section(nullptr),
+          forward(true)
+        {
+        }
+
+        void set(TrackSection *newSection, bool newForward)
+        {
+            section = newSection;
+            forward = newForward;
+        }
+    };
+
+    // We'll have one of these for each track in each direction
+    class TrackDirectionInfo {
+    public:
+        // Up to 3 sections leading off this track
+        SectionRef sections[maxDivergence];
+        // The number of sections
+        unsigned char numSections;
+        // The current setting of the points
+        unsigned char defaultIndex;
+
+        TrackDirectionInfo()
+        : numSections(0),
+          defaultIndex(0)
+        {
+        }
+
+        // Find whether there's space for the given section
+        bool hasSpaceForSection(const TrackSection *section) const
+        {
+            // Space in array?
+            if (numSections < maxDivergence)
+                return true;
+            // Or already in array?
+            for (const SectionRef &ref: sections)
+                if (ref.section == section)
+                    return true;
+            // Otherwise it won't fit
+            return false;
+        }
+
+        // Try adding track section
+        bool addSection(TrackSection *section, bool forward)
+        {
+            // Already in array?
+            for (const SectionRef &ref: sections)
+                if (ref.section == section)
+                    return true;
+            // Space in array?
+            if (numSections < maxDivergence) {
+                sections[numSections++].set(section, forward);
+                return true;
+            }
+            return false;
+        }
+
+        SectionRef &defaultSection()
+        {
+            return sections[defaultIndex];
+        }
+
+        void switchPoints()
+        {
+            unsigned int next = defaultIndex + 1;
+            if (next >= numSections)
+                next = 0;
+            defaultIndex = next;
+        }
+    };
+
+    // We'll have one of these for each track
+    class TrackInfo {
+    public:
+        // 0 = backwards, 1 = forwards
+        TrackDirectionInfo directionInfo[2];
+    };
+
+    // Track information
+    TrackInfo *trackInfo;
+
+    // Set of sections
+    std::unordered_set<TrackSection *> allSections;
 
 public:
     // Encapsulates a reference to a node in a particular direction (forwards or
@@ -72,6 +164,12 @@ public:
           firstTrack(newFirstTrack),
           numTracks(newNumTracks)
         {
+            assert(numTracks > 0);
+            assert(numTracks <= node->getNumTracks());
+            assert(firstTrack >= 0);
+            assert(firstTrack < node->getNumTracks());
+            assert(firstTrack + (forward ? (numTracks-1) : (1-numTracks)) >= 0);
+            assert(firstTrack + (forward ? (numTracks-1) : (1-numTracks)) < node->getNumTracks());
         }
 
         void set(T newNode, bool newForward)
@@ -153,15 +251,17 @@ public:
             return node->getMinSpec();
         }
 
-        void addTrackSection(TrackSection *section)
-        {
-            node->addTrackSection(section, forward);
-        }
+        // return false on failure
+        bool addTrackSection(TrackSection *section, bool nextForward);
 
-    private:
         int parentTrackIndex(int trackIndex) const
         {
             return firstTrack + (forward ? trackIndex : -trackIndex);
+        }
+        int localTrackIndex(int parentTrackIndex) const
+        {
+            return forward ? (parentTrackIndex - firstTrack)
+                           : (firstTrack - parentTrackIndex);
         }
     };
 
@@ -171,6 +271,8 @@ public:
 public:
     // Constructor
     TrackNode(const TrackSpec *newMinSpec);
+    // Destructor
+    ~TrackNode();
 
     // References
     Reference forward()
@@ -211,10 +313,9 @@ public:
 
     // TrackSection linkage
 
-    void addTrackSection(TrackSection *section, bool forward)
-    {
-        sections[forward].insert(section);
-    }
+    // return false if track couldn't be added
+    bool addTrackSection(bool forward, int startTrack, int ofNumTracks,
+                         TrackSection *section, bool nextForward);
 
     // Setters
 
@@ -240,10 +341,7 @@ public:
         notifySections();
     }
 
-    void setNumTracks(unsigned int newNumTracks)
-    {
-        numTracks = newNumTracks;
-    }
+    void setNumTracks(unsigned int newNumTracks);
 
     // Accessors
 

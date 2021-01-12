@@ -6,8 +6,9 @@ TrackSection::TrackSection(TrackNode::Reference start,
   lastDir1(-1),
   lastDir2(-1)
 {
-    start.addTrackSection(this);
-    end.addTrackSection(this);
+    // FIXME these can now fail if too much divergence
+    start.addTrackSection(this, true);
+    end.addTrackSection(this, false);
 
     interpolate();
 }
