@@ -12,6 +12,7 @@ TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
   minSpec(newMinSpec),
   hoverNode(nullptr),
   selectedNode(nullptr),
+  testPos(new TrackPosition()),
   dragMode(NONE),
   mouseMoved(true)
 {
@@ -25,6 +26,13 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
     TrackNode *closestNode = railway->findClosestNode(ray, range);
     if (hoverNode != closestNode) {
         hoverNode = closestNode;
+        renderer->setRedraw();
+    }
+
+    if (*testPos) {
+        *testPos += 1;
+        if (testPos->atEnd())
+            testPos->turnAround();
         renderer->setRedraw();
     }
 
@@ -140,6 +148,8 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             TrackSection *section = new TrackSection(selectedNode->forward(),
                                                      endNode->backward());
             railway->addSection(section);
+            if (!*testPos)
+                testPos->set(section, true, 0);
 
             selectedNode = endNode;
             dragMode = MOVE;

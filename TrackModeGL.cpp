@@ -101,4 +101,12 @@ void TrackMode::renderGL(RendererOpenGL *renderer)
         glColor3f(1, 1, 1);
         renderTrackNode(renderer, hoverNode);
     }
+
+    if (*testPos) {
+        glPointSize(10);
+        glBegin(GL_POINTS);
+        glColor3f(0, 0, 1);
+        glVertex3fv((const float *)testPos->getPosition());
+        glEnd();
+    }
 }
