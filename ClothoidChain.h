@@ -60,6 +60,14 @@ public:
         return length;
     }
 
+    Length parallelLength(Length leftOffset) const
+    {
+        Length length = 0;
+        for (const Clothoid &clothoid: chain)
+            length += clothoid.getParallelLength(leftOffset);
+        return length;
+    }
+
     Vec2l positionAtLength(Length length) const
     {
         if (length <= 0)
@@ -68,9 +76,22 @@ public:
             Length clothoidLength = clothoid.getLength();
             if (length < clothoidLength)
                 return clothoid.positionAtLength(length);
-            length -= clothoid.getLength();
+            length -= clothoidLength;
         }
         return chain.back().getStartPosition();
+    }
+
+    Vec2l parallelPositionAtParallelLength(Length leftOffset, Length length) const
+    {
+        if (length <= 0)
+            return chain.front().getStartParallelPosition(leftOffset);
+        for (const Clothoid &clothoid: chain) {
+            Length clothoidLength = clothoid.getParallelLength(leftOffset);
+            if (length < clothoidLength)
+                return clothoid.parallelPositionAtParallelLength(leftOffset, length);
+            length -= clothoidLength;
+        }
+        return chain.back().getStartParallelPosition(leftOffset);
     }
 };
 

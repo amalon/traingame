@@ -75,6 +75,12 @@ public:
     {
         return startPosition;
     }
+    Vec2l getStartParallelPosition(float leftOffset) const
+    {
+        Vec2l leftVec;
+        maths::sincos((Length)(startDirection + M_PI/2), &leftVec[1], &leftVec[0]);
+        return startPosition + leftVec * leftOffset;
+    }
     Angle getStartDirection() const
     {
         return startDirection;
@@ -93,6 +99,8 @@ public:
     }
     Length getParallelLength(Length leftOffset) const
     {
+        if (!leftOffset)
+            return length;
         if (curvatureRate != 0) {
             float avgCurvature = (startCurvature + getEndCurvature()) / 2;
             // FIXME calculate correctly
@@ -220,6 +228,27 @@ public:
         matrix[0][0] = cosRot; matrix[1][0] = -sinRot;
         matrix[0][1] = sinRot; matrix[1][1] = cosRot;
         return startPosition + matrix * fres;
+    }
+
+    Vec2f parallelPositionAtLength(Length leftOffset, Length length) const
+    {
+        Vec2f position = positionAtLength(length);
+        Angle direction = directionAtLength(length);
+        Vec2l leftVec;
+        maths::sincos((Length)(direction + M_PI/2), &leftVec[1], &leftVec[0]);
+        return position + leftVec * leftOffset;
+    }
+
+    Vec2f parallelPositionAtParallelLength(Length leftOffset, Length parallelDistance) const
+    {
+        // FIXME this isn't quite accurate for variable curvature
+        float totalParallelLength = getParallelLength(leftOffset);
+        float midLength = length * parallelDistance / totalParallelLength;
+        Vec2f position = positionAtLength(midLength);
+        Angle direction = directionAtLength(midLength);
+        Vec2l leftVec;
+        maths::sincos((Length)(direction + M_PI/2), &leftVec[1], &leftVec[0]);
+        return position + leftVec * leftOffset;
     }
 
     // Find the distance to curvature finalCurvature
