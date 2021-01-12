@@ -19,6 +19,7 @@ set(TRAINGAME_SRC
     Railway.cpp
     TrackNode.cpp
     TrackSection.cpp
+    TrackPosition.cpp
     RailwayGL.cpp
     TrackModeGL.cpp
     TrackSectionGL.cpp)
