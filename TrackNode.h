@@ -29,10 +29,11 @@ private:
 public:
     // Encapsulates a reference to a node in a particular direction (forwards or
     // backwards)
-    class Reference
+    template <typename T>
+    class TReference
     {
     private:
-        TrackNode *node;
+        T node;
         // True if the reference is to the forward end of the node
         bool forward;
         // Parent node track index of reference trackIndex 0
@@ -42,12 +43,21 @@ public:
 
 
     public:
-        Reference()
+        TReference()
         : node(nullptr)
         {
         }
 
-        Reference(TrackNode *newNode, bool newForward)
+        template <typename U>
+        TReference(const TReference<const U*> &other)
+        : node(other.node),
+          forward(other.forward),
+          firstTrack(other.firstTrack),
+          numTracks(other.numTracks)
+        {
+        }
+
+        TReference(T newNode, bool newForward)
         : node(newNode),
           forward(newForward),
           firstTrack(newForward ? 0 : (newNode->numTracks - 1)),
@@ -55,8 +65,8 @@ public:
         {
         }
 
-        Reference(TrackNode *newNode, bool newForward,
-                  int newFirstTrack, int newNumTracks)
+        TReference(T newNode, bool newForward,
+                  int newFirstTrack, unsigned int newNumTracks)
         : node(newNode),
           forward(newForward),
           firstTrack(newFirstTrack),
@@ -64,7 +74,7 @@ public:
         {
         }
 
-        void set(TrackNode *newNode, bool newForward)
+        void set(T newNode, bool newForward)
         {
             node = newNode;
             forward = newForward;
@@ -72,7 +82,7 @@ public:
             numTracks = newNode->numTracks;
         }
 
-        void set(TrackNode *newNode, bool newForward,
+        void set(T newNode, bool newForward,
                  int newFirstTrack, int newNumTracks)
         {
             node = newNode;
@@ -155,6 +165,9 @@ public:
         }
     };
 
+    typedef TReference<TrackNode *> Reference;
+    typedef TReference<const TrackNode *> ConstReference;
+
 public:
     // Constructor
     TrackNode(const TrackSpec *newMinSpec);
@@ -162,11 +175,38 @@ public:
     // References
     Reference forward()
     {
-        return Reference(this, true, 0, numTracks);
+        return Reference(this, true);
     }
+    ConstReference forward() const
+    {
+        return ConstReference(this, true);
+    }
+
+    Reference forward(int firstTrack, int numTracks)
+    {
+        return Reference(this, true, firstTrack, numTracks);
+    }
+    ConstReference forward(int firstTrack, int numTracks) const
+    {
+        return ConstReference(this, true, firstTrack, numTracks);
+    }
+
     Reference backward()
     {
-        return Reference(this, false, numTracks - 1, numTracks);
+        return Reference(this, false);
+    }
+    ConstReference backward() const
+    {
+        return ConstReference(this, false);
+    }
+
+    Reference backward(int firstTrack, int numTracks)
+    {
+        return Reference(this, false, firstTrack, numTracks);
+    }
+    ConstReference backward(int firstTrack, int numTracks) const
+    {
+        return ConstReference(this, false, firstTrack, numTracks);
     }
 
     // TrackSection linkage
