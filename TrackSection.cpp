@@ -22,10 +22,11 @@ float TrackSection::getLength(int trackIndex) const
     return chain.parallelLength(-offset);
 }
 
-Vec3f TrackSection::getPosition(int trackIndex, float distance) const
+Vec3f TrackSection::getPosition(int trackIndex, float distance,
+                                Mat22f *outRotMatrix) const
 {
     float offset = nodes[0].getTrackOffset(trackIndex) - nodes[0].getMidpointOffset();
-    return (Vec3f)chain.parallelPositionAtParallelLength(-offset, distance);
+    return (Vec3f)chain.parallelPositionAtParallelLength(-offset, distance, outRotMatrix);
 }
 
 /**

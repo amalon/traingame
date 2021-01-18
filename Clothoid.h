@@ -17,6 +17,8 @@ public:
     typedef Angle Curvature;
     typedef Angle CurvatureRate;
     typedef maths::Vector<2, Length> Vec2l;
+    typedef maths::Matrix<2, Length> Mat22l;
+
 
 private:
     // Start position of clothoid
@@ -79,6 +81,17 @@ public:
     {
         Vec2l leftVec;
         maths::sincos((Length)(startDirection + M_PI/2), &leftVec[1], &leftVec[0]);
+        return startPosition + leftVec * leftOffset;
+    }
+    Vec2l getStartParallelPosition(float leftOffset, Mat22l *outRotMatrix) const
+    {
+        Vec2l leftVec;
+        maths::sincos((Length)(startDirection + M_PI/2), &leftVec[1], &leftVec[0]);
+        if (outRotMatrix) {
+            (*outRotMatrix)[1] = leftVec;
+            (*outRotMatrix)[0][0] = leftVec[1];
+            (*outRotMatrix)[0][1] = -leftVec[0];
+        }
         return startPosition + leftVec * leftOffset;
     }
     Angle getStartDirection() const
@@ -222,11 +235,10 @@ public:
 
         // Rotate the output to compensate for startDirection and startCurvature
         Angle rotation = startDirection - fresRotation;
-        maths::Matrix<2, Length> matrix;
-        Length sinRot = sin(rotation);
-        Length cosRot = cos(rotation);
-        matrix[0][0] = cosRot; matrix[1][0] = -sinRot;
-        matrix[0][1] = sinRot; matrix[1][1] = cosRot;
+        Mat22l matrix;
+        maths::sincos((Length)rotation, &matrix[0][1], &matrix[0][0]);
+        matrix[1][0] = -matrix[0][1];
+        matrix[1][1] = matrix[0][0];
         return startPosition + matrix * fres;
     }
 
@@ -239,7 +251,8 @@ public:
         return position + leftVec * leftOffset;
     }
 
-    Vec2f parallelPositionAtParallelLength(Length leftOffset, Length parallelDistance) const
+    Vec2f parallelPositionAtParallelLength(Length leftOffset, Length parallelDistance,
+                                           Mat22l *outRotMatrix = nullptr) const
     {
         // FIXME this isn't quite accurate for variable curvature
         float totalParallelLength = getParallelLength(leftOffset);
@@ -248,6 +261,11 @@ public:
         Angle direction = directionAtLength(midLength);
         Vec2l leftVec;
         maths::sincos((Length)(direction + M_PI/2), &leftVec[1], &leftVec[0]);
+        if (outRotMatrix) {
+            (*outRotMatrix)[1] = leftVec;
+            (*outRotMatrix)[0][0] = leftVec[1];
+            (*outRotMatrix)[0][1] = -leftVec[0];
+        }
         return position + leftVec * leftOffset;
     }
 

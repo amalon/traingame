@@ -14,6 +14,7 @@ class TrackSection : public Renderable
 private:
     typedef ClothoidChain<float, float> ClothoidChainT;
     typedef ClothoidChainT::Clothoid ClothoidT;
+    typedef ClothoidT::Mat22l Mat22f;
 
     // Minimum track specifications
     const TrackSpec *minSpec;
@@ -55,7 +56,8 @@ public:
     }
 
     float getLength(int trackIndex) const;
-    Vec3f getPosition(int trackIndex, float distance) const;
+    Vec3f getPosition(int trackIndex, float distance,
+                      Mat22f *outRotMatrix = nullptr) const;
 
     // Notifications of node changes
     void notifyNodeChanged(TrackNode *node);

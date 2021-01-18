@@ -15,6 +15,7 @@ public:
     typedef typename Clothoid::Curvature Curvature;
     typedef typename Clothoid::CurvatureRate CurvatureRate;
     typedef typename Clothoid::Vec2l Vec2l;
+    typedef typename Clothoid::Mat22l Mat22l;
     typedef std::list<Clothoid> ClothoidList;
 
 private:
@@ -81,17 +82,19 @@ public:
         return chain.back().getStartPosition();
     }
 
-    Vec2l parallelPositionAtParallelLength(Length leftOffset, Length length) const
+    Vec2l parallelPositionAtParallelLength(Length leftOffset, Length length,
+                                           Mat22l *outRotMatrix = nullptr) const
     {
-        if (length <= 0)
-            return chain.front().getStartParallelPosition(leftOffset);
+        if (length <= 0) {
+            return chain.front().getStartParallelPosition(leftOffset, outRotMatrix);
+        }
         for (const Clothoid &clothoid: chain) {
             Length clothoidLength = clothoid.getParallelLength(leftOffset);
             if (length < clothoidLength)
-                return clothoid.parallelPositionAtParallelLength(leftOffset, length);
+                return clothoid.parallelPositionAtParallelLength(leftOffset, length, outRotMatrix);
             length -= clothoidLength;
         }
-        return chain.back().getStartParallelPosition(leftOffset);
+        return chain.back().getStartParallelPosition(leftOffset, outRotMatrix);
     }
 };
 

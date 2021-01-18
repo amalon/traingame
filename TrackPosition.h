@@ -28,7 +28,7 @@ public:
 
     int getSectionTrackIndex() const;
 
-    Vec3f getPosition() const;
+    Vec3f getPosition(Mat22f *outRotMatrix = nullptr) const;
 
     // Face the other way
     void turnAround();

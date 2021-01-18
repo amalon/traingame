@@ -31,6 +31,7 @@
 #include <cstring>
 #include <ostream>
 #include <sstream>
+#include <limits>
 
 namespace maths
 {

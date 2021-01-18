@@ -47,11 +47,11 @@ int TrackPosition::getSectionTrackIndex() const
     return section->start().parentTrackIndex(trackIndex);
 }
 
-Vec3f TrackPosition::getPosition() const
+Vec3f TrackPosition::getPosition(Mat22f *outRotMatrix) const
 {
     assert(section && "Section must be set to get position");
 
-    return section->getPosition(getSectionTrackIndex(), distance);
+    return section->getPosition(getSectionTrackIndex(), distance, outRotMatrix);
 }
 
 void TrackPosition::turnAround()
