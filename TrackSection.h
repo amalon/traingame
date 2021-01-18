@@ -7,11 +7,16 @@
 
 #include <list>
 
+class TrackSpec;
+
 class TrackSection : public Renderable
 {
 private:
     typedef ClothoidChain<float, float> ClothoidChainT;
     typedef ClothoidChainT::Clothoid ClothoidT;
+
+    // Minimum track specifications
+    const TrackSpec *minSpec;
 
     // Nodes at each end
     TrackNode::Reference nodes[2];
@@ -25,7 +30,8 @@ private:
 public:
     // Constructor
     TrackSection(TrackNode::Reference start,
-                 TrackNode::Reference end);
+                 TrackNode::Reference end,
+                 const TrackSpec *newMinSpec);
 
     void interpolate();
 

@@ -2,6 +2,7 @@
 #include "TrackNode.h"
 #include "TrackSection.h"
 #include "TrackPosition.h"
+#include "TrackSpec.h"
 #include "Railway.h"
 #include "Renderer.h"
 
@@ -65,7 +66,7 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
                     float xySqr = xy.sqr();
                     if (xySqr) {
                         float curvature = xy[1] * 2 / xySqr;
-                        if (-1.0 / 20.0 < curvature && curvature < 1.0 / 20.0) {
+                        if (-minSpec->getMaxCurvature() < curvature && curvature < minSpec->getMaxCurvature()) {
                             selectedNode->setCurvature(curvature);
                             updateHandles();
                         }
@@ -146,7 +147,8 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             railway->addNode(endNode);
 
             TrackSection *section = new TrackSection(selectedNode->forward(),
-                                                     endNode->backward());
+                                                     endNode->backward(),
+                                                     minSpec);
             railway->addSection(section);
             if (!*testPos)
                 testPos->set(section, true, 0);

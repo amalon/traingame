@@ -5,7 +5,7 @@
 
 void TrackSection::renderGL(RendererOpenGL *renderer)
 {
-    float maxCurve = 1.0f / 30.0f;
+    const float maxCurve = minSpec->getMaxCurvature();
     for (const ClothoidT &clothoid: chain.clothoids()) {
         float length = clothoid.getLength();
         if (!length)
@@ -59,7 +59,7 @@ void TrackSection::renderGL(RendererOpenGL *renderer)
 
         for (int track = 0; track < nodes[0].getNumTracks(); ++track) {
             float offset = nodes[0].getTrackOffset(track) - nodes[0].getMidpointOffset();
-            for (int rail = 0; rail < nodes[0].getMinSpec().getTrackGauge()->getNumRails(); ++rail) {
+            for (int rail = 0; rail < minSpec->getTrackGauge()->getNumRails(); ++rail) {
                 glBegin(GL_LINE_STRIP);
                 for (int i = 0; i < samples; ++i) {
                     float len = lengthDelta * i;
@@ -85,7 +85,7 @@ void TrackSection::renderGL(RendererOpenGL *renderer)
 
                     Vec2f pos = clothoid.positionAtLength(len);
                     glVertex2fv((const float *)(pos + leftVec*(offset -
-                                                               nodes[0].getMinSpec().getTrackGauge()->getRailPosition(rail)[0])));
+                                                               minSpec->getTrackGauge()->getRailPosition(rail)[0])));
                 }
                 glEnd();
             }

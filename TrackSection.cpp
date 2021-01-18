@@ -2,8 +2,10 @@
 #include "TrackSpec.h"
 
 TrackSection::TrackSection(TrackNode::Reference start,
-                           TrackNode::Reference end)
-: nodes{start, end},
+                           TrackNode::Reference end,
+                           const TrackSpec *newMinSpec)
+: minSpec(newMinSpec),
+  nodes{start, end},
   lastDir1(-1),
   lastDir2(-1)
 {
@@ -203,9 +205,9 @@ void TrackSection::interpolate()
     constexpr int d2end = 2;
 
     // TODO pick an appropriate rate
-    const float curvatureRate = 1.0f / 30.0f / 10.0f;
-    float minCurvature = 1.0f / 30.0f;
-    const float maxCurvature = 1.0f / 15.0f;
+    const float curvatureRate = minSpec->getMinCurvatureRate();
+    float minCurvature = minSpec->getMinCurvature();
+    const float maxCurvature = minSpec->getMaxCurvature();
     const float startDirection = nodes[0].getDirection();
     const float startCurvature = nodes[0].getCurvature();
     const float endDirectionRev = nodes[1].getDirection();
@@ -217,7 +219,7 @@ void TrackSection::interpolate()
 
     // If multiple tracks to right, reduce curvature accordingly
     if (nodes[0].getNumTracks() > 1) {
-        float displacement = nodes[0].getMinSpec().getTrackSpacing() * (nodes[0].getNumTracks() - 1) / 2;
+        float displacement = minSpec->getTrackSpacing() * (nodes[0].getNumTracks() - 1) / 2;
         minCurvature = 1.0f / (1.0f / minCurvature + displacement);
     }
 
