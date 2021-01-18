@@ -21,6 +21,30 @@ TrackSection
 [ ] Excess end curvature not handled
 [x] Multiple tracks in sections and nodes
 
+Trains
+[ ] TrainWheelset - a single pair of wheels connected by a fixed axle
+[ ] TrainBogie - a set of wheelsets and child bogies
+[ ] TrainCoupling - connects bogies together
+[ ] TrainUnit - a single unit with couplings, e.g. a locomotive, carriage, or truck
+    [ ] Can be stored to a file and duplicated
+[ ] TrainTemplate
+    A layout of TrainUnits that can be generated
+[ ] Train - A specific arrangement of train units
+    Can be stored to a file, referring to TrainUnits
+    [ ] DMU/EMU - a loco at each end (or a loco and cab coach) + carriages in some configuration
+    [ ] steam loco + tender + carriages / trucks [+ brake van]
+    [ ] multiple locos, e.g. long trains
+[ ] TrainPhysics - train physics generalisation (though how do trains then interact with one another?)
+    [ ] TrainPhysicsSimple - really simple, just follows track
+    [ ] TrainPhysics... - more complicated physics engines
+    [ ] TrainPhysicsRigidBody - for more realism
+    [ ] TrainPhysicsSoftBody - for crashes
+[ ] TrainMode - for putting trains on track
+    [ ] select TrainTemplate or start a new train
+    [ ] drag TrainUnits onto track
+[ ] Enough physics for a loco to pull a train
+[ ] Collision detection
+
 General
 [ ] Multiple tools GUI
 [ ] Delete track segment
