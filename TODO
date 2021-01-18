@@ -25,11 +25,11 @@ Trains
 [x] TrainWheelset - a single pair of wheels connected by a fixed axle
 [x] TrainBogie - a set of wheelsets and child bogies
 [.] TrainCoupling - connects bogies together
-[ ] TrainUnit - a single unit with couplings, e.g. a locomotive, carriage, or truck
+[x] TrainUnit - a single unit with couplings, e.g. a locomotive, carriage, or truck
     [ ] Can be stored to a file and duplicated
 [ ] TrainTemplate
     A layout of TrainUnits that can be generated
-[ ] Train - A specific arrangement of train units
+[x] Train - A specific arrangement of train units
     Can be stored to a file, referring to TrainUnits
     [ ] DMU/EMU - a loco at each end (or a loco and cab coach) + carriages in some configuration
     [ ] steam loco + tender + carriages / trucks [+ brake van]

@@ -22,11 +22,15 @@ set(TRAINGAME_SRC
     TrackPosition.cpp
     TrainWheelset.cpp
     TrainBogie.cpp
+    TrainUnit.cpp
+    Train.cpp
     RailwayGL.cpp
     TrackModeGL.cpp
     TrackSectionGL.cpp
     TrainWheelsetGL.cpp
-    TrainBogieGL.cpp)
+    TrainBogieGL.cpp
+    TrainUnitGL.cpp
+    TrainGL.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)
