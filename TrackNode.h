@@ -1,13 +1,13 @@
 #ifndef TRAINS_TRACK_NODE_H
 #define TRAINS_TRACK_NODE_H
 
-#include "TrackSpec.h"
 #include "Vector.h"
 
 #include <cassert>
 #include <unordered_set>
 
 class TrackSection;
+class TrackSpec;
 
 class TrackNode
 {

@@ -1,4 +1,5 @@
 #include "TrackSection.h"
+#include "TrackSpec.h"
 
 TrackSection::TrackSection(TrackNode::Reference start,
                            TrackNode::Reference end)

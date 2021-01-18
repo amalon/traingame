@@ -1,4 +1,5 @@
 #include "TrackSection.h"
+#include "TrackSpec.h"
 
 #include <GL/gl.h>
 
