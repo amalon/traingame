@@ -6,6 +6,11 @@
 #include "Railway.h"
 #include "Renderer.h"
 
+#include "TrainWheelset.h"
+#include "TrainBogie.h"
+#include "TrainUnit.h"
+#include "Train.h"
+
 #include <cmath>
 
 TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
@@ -13,7 +18,7 @@ TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
   minSpec(newMinSpec),
   hoverNode(nullptr),
   selectedNode(nullptr),
-  testPos(new TrackPosition()),
+  testTrain(false),
   dragMode(NONE),
   mouseMoved(true)
 {
@@ -27,13 +32,6 @@ void TrackMode::mouseMove(const LineNormal3f &ray)
     TrackNode *closestNode = railway->findClosestNode(ray, range);
     if (hoverNode != closestNode) {
         hoverNode = closestNode;
-        renderer->setRedraw();
-    }
-
-    if (*testPos) {
-        *testPos += 1;
-        if (testPos->atEnd())
-            testPos->turnAround();
         renderer->setRedraw();
     }
 
@@ -130,10 +128,11 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
                 updateHandles();
         } else if (clicks == 2) {
             // Double left click: Start a new track section
+            constexpr unsigned int numTracks = 1;
 
             if (!selectedNode) {
                 TrackNode *startNode = new TrackNode(minSpec);
-                startNode->setNumTracks(4);
+                startNode->setNumTracks(numTracks);
                 startNode->setMidpoint((Vec3f)(Vec2f)ray.start);
                 railway->addNode(startNode);
 
@@ -141,7 +140,7 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
             }
 
             TrackNode *endNode = new TrackNode(minSpec);
-            endNode->setNumTracks(4);
+            endNode->setNumTracks(numTracks);
             endNode->setMidpoint((Vec3f)(Vec2f)ray.start);
             endNode->setDirection(selectedNode->getDirection());
             railway->addNode(endNode);
@@ -150,8 +149,65 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
                                                      endNode->backward(),
                                                      minSpec);
             railway->addSection(section);
-            if (!*testPos)
-                testPos->set(section, true, 0);
+            if (!testTrain) {
+                for (int i = 0; i < numTracks; ++i) {
+                    // Create a test train
+                    Train *train = new Train();
+
+                    TrainBogie *locoChassis = new TrainBogie();
+                    locoChassis->initWheelsets(3, minSpec->getTrackGauge(), 1.0f, 5.0f);
+
+                    TrainBogie *rear = new TrainBogie();
+                    rear->initWheelsets(2, minSpec->getTrackGauge(), 0.45f, 1.5f);
+                    locoChassis->addBogie(rear, Vec3f(-5.0f, 0, 0));
+
+                    TrainBogie *locoArtic = new TrainBogie();
+                    locoArtic->initWheelsets(3, minSpec->getTrackGauge(), 1.0f, 5.0f);
+
+                    TrainBogie *front = new TrainBogie();
+                    front->initWheelsets(2, minSpec->getTrackGauge(), 0.45f, 1.5f);
+                    locoArtic->addBogie(front, Vec3f(5.0f, 0, 0));
+
+                    locoChassis->addBogie(locoArtic, Vec3f(8.0f, 0, 0));
+
+                    TrainUnit *loco = new TrainUnit();
+                    loco->setChassis(locoChassis);
+
+                    train->addUnitBack(loco);
+
+                    TrainBogie *tenderChassis = new TrainBogie();
+                    tenderChassis->initWheelsets(5, minSpec->getTrackGauge(), 0.45f, 5.0f);
+
+                    TrainUnit *tender = new TrainUnit();
+                    tender->setChassis(tenderChassis);
+
+                    train->addUnitBack(tender);
+
+                    for (int u = 0; u < 10; ++u) {
+                        TrainBogie *bogie1 = new TrainBogie();
+                        bogie1->initWheelsets(2, minSpec->getTrackGauge(), 0.45f, 2.0f);
+
+                        TrainBogie *bogie2 = new TrainBogie();
+                        bogie2->initWheelsets(2, minSpec->getTrackGauge(), 0.45f, 2.0f);
+
+                        TrainBogie *chassis = new TrainBogie();
+                        chassis->addBogie(bogie1, Vec3f(7.0f, 0, 0));
+                        chassis->addBogie(bogie2, Vec3f(-7.0f, 0, 0));
+                        chassis->setExtent(10.0f, 10.0f);
+
+                        TrainUnit *unit = new TrainUnit();
+                        unit->setChassis(chassis);
+
+                        train->addUnitBack(unit);
+                    }
+
+                    TrackPosition pos;
+                    pos.set(section, true, i);
+                    train->reposition(pos);
+
+                    railway->addTrain(train);
+                }
+            }
 
             selectedNode = endNode;
             dragMode = MOVE;

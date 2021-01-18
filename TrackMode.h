@@ -8,7 +8,6 @@
 
 class TrackNode;
 class TrackSection;
-class TrackPosition;
 class TrackSpec;
 class Railway;
 
@@ -21,7 +20,7 @@ private:
     TrackNode *hoverNode;
     TrackNode *selectedNode;
 
-    TrackPosition *testPos;
+    bool testTrain;
 
     enum DragMode {
         NONE,
