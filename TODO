@@ -20,6 +20,7 @@ TrackSection
 [ ] Avoid self-crossing
 [ ] Excess end curvature not handled
 [x] Multiple tracks in sections and nodes
+[ ] Superelevation
 
 Trains
 [x] TrainWheelset - a single pair of wheels connected by a fixed axle
@@ -71,3 +72,13 @@ General
             could vary along a tracksection?
 [x] Fix disappearing view when zooming out
 [x] Prettify island a bit
+[ ] Convert to 3D
+    [ ] Perspective Viewpoint
+    [ ] Mouse ray intersection with ground plane
+    [ ] 3D track
+    [ ] 3D train wheelsets
+    [ ] 3D train bogies
+    [ ] 3D navigation (rotate / tilt)
+    [ ] Rotating wheels
+    [ ] Frustum culling
+    [ ] More modern use of OpenGL
