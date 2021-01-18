@@ -39,6 +39,11 @@ public:
         rails.push_back(placement);
     }
 
+    float getGauge() const
+    {
+        return gauge;
+    }
+
     unsigned int getNumRails() const
     {
         return rails.size();

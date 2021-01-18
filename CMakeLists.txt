@@ -20,9 +20,13 @@ set(TRAINGAME_SRC
     TrackNode.cpp
     TrackSection.cpp
     TrackPosition.cpp
+    TrainWheelset.cpp
+    TrainBogie.cpp
     RailwayGL.cpp
     TrackModeGL.cpp
-    TrackSectionGL.cpp)
+    TrackSectionGL.cpp
+    TrainWheelsetGL.cpp
+    TrainBogieGL.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(SDL2 REQUIRED)

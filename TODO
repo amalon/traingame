@@ -22,9 +22,9 @@ TrackSection
 [x] Multiple tracks in sections and nodes
 
 Trains
-[ ] TrainWheelset - a single pair of wheels connected by a fixed axle
-[ ] TrainBogie - a set of wheelsets and child bogies
-[ ] TrainCoupling - connects bogies together
+[x] TrainWheelset - a single pair of wheels connected by a fixed axle
+[x] TrainBogie - a set of wheelsets and child bogies
+[.] TrainCoupling - connects bogies together
 [ ] TrainUnit - a single unit with couplings, e.g. a locomotive, carriage, or truck
     [ ] Can be stored to a file and duplicated
 [ ] TrainTemplate
