@@ -1,5 +1,6 @@
 #include "Railway.h"
 #include "TrackNode.h"
+#include "Train.h"
 
 void Railway::addNode(TrackNode *node)
 {
@@ -9,6 +10,11 @@ void Railway::addNode(TrackNode *node)
 void Railway::addSection(TrackSection *section)
 {
     sections.push_back(section);
+}
+
+void Railway::addTrain(Train *train)
+{
+    trains.push_back(train);
 }
 
 // Find nearest node
@@ -25,4 +31,10 @@ TrackNode *Railway::findClosestNode(const LineNormal3f &line, float range)
         }
     }
     return best;
+}
+
+void Railway::advance(float dt)
+{
+    for (Train *train: trains)
+        train->drive(dt);
 }
