@@ -150,6 +150,7 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
                                                      minSpec);
             railway->addSection(section);
             if (!testTrain) {
+                testTrain = true;
                 for (int i = 0; i < numTracks; ++i) {
                     // Create a test train
                     Train *train = new Train();
