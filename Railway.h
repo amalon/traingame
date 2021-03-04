@@ -27,7 +27,7 @@ public:
     void addTrain(Train *train);
 
     // Find nearest node
-    TrackNode *findClosestNode(const LineNormal3f &line, float range);
+    TrackNode *findClosestNode(const LineUnit3f &line, float range);
 
     void advance(float dt);
 

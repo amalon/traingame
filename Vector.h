@@ -10,6 +10,6 @@ typedef maths::Vector<3, float> Vec3f;
 
 typedef maths::Matrix<2, float> Mat22f;
 
-typedef maths::Line<3, float, maths::LineNormal> LineNormal3f;
+typedef maths::Line<3, float, maths::LineUnit> LineUnit3f;
 
 #endif // TRAINS_VECTOR_H

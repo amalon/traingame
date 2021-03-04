@@ -47,9 +47,9 @@ float Viewpoint::getFar() const
     return -100;
 }
 
-LineNormal3f Viewpoint::viewportToWorldRay(const Vec2f &viewport) const
+LineUnit3f Viewpoint::viewportToWorldRay(const Vec2f &viewport) const
 {
-    LineNormal3f ret;
+    LineUnit3f ret;
 
     ret.start[0] = target[0] + getLeft() + viewport[0] * (getRight() - getLeft());
     ret.start[1] = target[1] + getTop() + viewport[1] * (getBottom() - getTop());

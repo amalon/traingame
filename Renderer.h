@@ -14,7 +14,7 @@ class Renderer
 protected:
     Viewpoint viewpoint;
     Vec2f mouseViewport;
-    LineNormal3f mouseRay;
+    LineUnit3f mouseRay;
     ControlMode *activeMode;
     ControlMode *navigateMode;
     bool redraw;

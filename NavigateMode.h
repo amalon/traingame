@@ -6,16 +6,16 @@
 class NavigateMode : public ControlMode
 {
 private:
-    LineNormal3f mouseRay;
+    LineUnit3f mouseRay;
     bool panning;
 
 public:
     NavigateMode();
 
-    virtual void mouseMove(const LineNormal3f &ray);
+    virtual void mouseMove(const LineUnit3f &ray);
     virtual void mouseLeave();
-    virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
-    virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
+    virtual void mouseDown(const LineUnit3f &ray, int button, int clicks);
+    virtual void mouseUp(const LineUnit3f &ray, int button, int clicks);
     virtual void mouseWheel(int dx, int dy, bool flipped);
 };
 

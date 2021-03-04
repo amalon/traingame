@@ -25,10 +25,10 @@ public:
     virtual void activate();
     virtual void deactivate();
 
-    virtual void mouseMove(const LineNormal3f &ray);
+    virtual void mouseMove(const LineUnit3f &ray);
     virtual void mouseLeave();
-    virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
-    virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
+    virtual void mouseDown(const LineUnit3f &ray, int button, int clicks);
+    virtual void mouseUp(const LineUnit3f &ray, int button, int clicks);
     virtual void mouseWheel(int dx, int dy, bool flipped);
 
     virtual void viewportChanged();

@@ -18,7 +18,7 @@ void Railway::addTrain(Train *train)
 }
 
 // Find nearest node
-TrackNode *Railway::findClosestNode(const LineNormal3f &line, float range)
+TrackNode *Railway::findClosestNode(const LineUnit3f &line, float range)
 {
     TrackNode *best = nullptr;
     float bestRangeSqr = range * range;

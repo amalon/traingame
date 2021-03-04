@@ -8,7 +8,7 @@ NavigateMode::NavigateMode()
     mouseRay.norm.set(0);
 }
 
-void NavigateMode::mouseMove(const LineNormal3f &ray)
+void NavigateMode::mouseMove(const LineUnit3f &ray)
 {
     if (panning && !mouseRay.norm.zero()) {
         Vec3f diff = ray.start - mouseRay.start;
@@ -26,14 +26,14 @@ void NavigateMode::mouseLeave()
     mouseRay.norm.set(0);
 }
 
-void NavigateMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
+void NavigateMode::mouseDown(const LineUnit3f &ray, int button, int clicks)
 {
     // Right click pans
     if (button == 1)
         panning = true;
 }
 
-void NavigateMode::mouseUp(const LineNormal3f &ray, int button, int clicks)
+void NavigateMode::mouseUp(const LineUnit3f &ray, int button, int clicks)
 {
     if (button == 1)
         panning = false;

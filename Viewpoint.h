@@ -43,7 +43,7 @@ public:
     float getNear() const;
     float getFar() const;
 
-    LineNormal3f viewportToWorldRay(const Vec2f &viewport) const;
+    LineUnit3f viewportToWorldRay(const Vec2f &viewport) const;
     float viewportToWorldSize(const Vec3f &pos, float size) const;
 };
 

@@ -26,7 +26,7 @@ TrackMode::TrackMode(Railway *newRailway, const TrackSpec *newMinSpec)
     mouseRay.norm.set(0);
 }
 
-void TrackMode::mouseMove(const LineNormal3f &ray)
+void TrackMode::mouseMove(const LineUnit3f &ray)
 {
     float range = renderer->getViewpoint().viewportToWorldSize(ray.startPosition(), 0.02);
     TrackNode *closestNode = railway->findClosestNode(ray, range);
@@ -87,7 +87,7 @@ void TrackMode::mouseLeave()
     mouseRay.norm.set(0);
 }
 
-void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
+void TrackMode::mouseDown(const LineUnit3f &ray, int button, int clicks)
 {
     // Left button
     if (button == 0) {
@@ -225,7 +225,7 @@ void TrackMode::mouseDown(const LineNormal3f &ray, int button, int clicks)
     }
 }
 
-void TrackMode::mouseUp(const LineNormal3f &ray, int button, int clicks)
+void TrackMode::mouseUp(const LineUnit3f &ray, int button, int clicks)
 {
     // Left button
     if (button == 0) {
@@ -308,7 +308,7 @@ void TrackMode::updateHandles()
     renderer->setRedraw();
 }
 
-const TrackMode::Handle *TrackMode::handleUnderMouse(const LineNormal3f &ray, float size) const
+const TrackMode::Handle *TrackMode::handleUnderMouse(const LineUnit3f &ray, float size) const
 {
     for (const Handle &handle: handles) {
         if (handle.enabled) {

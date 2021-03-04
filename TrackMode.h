@@ -30,7 +30,7 @@ private:
         POINTS
     } dragMode;
     int dragIndex;
-    LineNormal3f mouseRay;
+    LineUnit3f mouseRay;
     bool mouseMoved;
 
     struct Handle {
@@ -44,10 +44,10 @@ private:
 public:
     TrackMode(Railway *newRailway, const TrackSpec *newMinSpec);
 
-    virtual void mouseMove(const LineNormal3f &ray);
+    virtual void mouseMove(const LineUnit3f &ray);
     virtual void mouseLeave();
-    virtual void mouseDown(const LineNormal3f &ray, int button, int clicks);
-    virtual void mouseUp(const LineNormal3f &ray, int button, int clicks);
+    virtual void mouseDown(const LineUnit3f &ray, int button, int clicks);
+    virtual void mouseUp(const LineUnit3f &ray, int button, int clicks);
 
     virtual void viewportChanged();
 
@@ -56,7 +56,7 @@ public:
 private:
     void updateHandles();
     void renderHandlesGL(RendererOpenGL * renderer);
-    const Handle *handleUnderMouse(const LineNormal3f &ray, float size) const;
+    const Handle *handleUnderMouse(const LineUnit3f &ray, float size) const;
 };
 
 #endif // TRAINS_TRACK_MODE_H
